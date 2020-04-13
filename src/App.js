@@ -1,10 +1,10 @@
 import React from "react";
+import Dashboard from "./views/Dashboard/Dashboard";
 
 const App = () => {
   return (
     <div>
-      Hello world
-      <div>Hello you</div>
+      <Dashboard />
     </div>
   );
 };
