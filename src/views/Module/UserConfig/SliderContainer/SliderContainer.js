@@ -22,7 +22,7 @@ const tempMarks = [
       label: '50°C',
     }
   ];
-  const humiMarks = [
+  const humidMarks = [
     {
       value: 0,
       label: '0%',
@@ -68,7 +68,7 @@ const SliderContainer = (props) => {
         aria-labelledby= {props.type}
         step={props.step}
         valueLabelDisplay="auto"
-        marks = {props.type === 'temperature' ? tempMarks : props.type === 'humidity' ? humiMarks : lightMarks}
+        marks = {props.type === 'temperature' ? tempMarks : props.type === 'humidity' ? humidMarks : lightMarks}
         onChange={props.change}
       />
     </div>

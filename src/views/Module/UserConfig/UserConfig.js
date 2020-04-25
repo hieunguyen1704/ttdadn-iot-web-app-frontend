@@ -3,16 +3,16 @@ import "./theme/UserConfig.scss";
 
 import SliderContainer from "./SliderContainer/SliderContainer";
 import Button from "@material-ui/core/Button";
-
 class UserConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {
       threshold: {
-        temperature: 35,
-        humidity: 60,
-        light: 1000,
-      }
+        tempeThreshold: 35,
+        humidThreshold: 60,
+        lightThreshold: 1000
+      },
+      currentUserId: 1
     };
     // this.changeHandler = this.changeHandler.bind(this);
   }
@@ -32,40 +32,38 @@ class UserConfig extends Component {
   resetHandler(){
     this.setState({
       threshold: {
-        temperature: 35,
-        humidity: 60,
-        light: 1000,
+        tempeThreshold: 35,
+        humidThreshold: 60,
+        lightThreshold: 1000
       }
     });
   }
   render() {
-    // const classes = useStyles();
     const { threshold } = this.state;
     const sliderContainerList = Object.keys(threshold).map((elKey) => {
       return (
         <SliderContainer
           key={elKey}
-          type={elKey}
-          max={elKey === "temperature" ? 50 : elKey === "humidity" ? 100 : 4095}
+          type={elKey ==="tempeThreshold" ? "temperature" : elKey === "humidThreshold" ? "humidity": "light"}
+          max={elKey === "tempeThreshold" ? 50 : elKey === "humidThreshold" ? 100 : 4095}
           value={threshold[elKey]}
-          step={elKey === "temperature" ? 1 : elKey === "humidity" ? 2 : 10}
+          step={elKey === "tempeThreshold" ? 1 : elKey === "humidThreshold" ? 2 : 10}
           change={this.changeHandler.bind(this, elKey)}
         />
       );
     });
     return (
       <div>
+        <h1 style={{textAlign:"center"}}>Setting</h1>
         <form onSubmit={this.submitHandler.bind(this)}>
           {sliderContainerList}
           <Button variant="contained" color="primary" type="submit">
             Apply
           </Button>
-        </form>
-        <div>
           <Button variant="contained" color="secondary" onClick={this.resetHandler.bind(this)}>
             Reset
           </Button>
-        </div>
+        </form>
       </div>
     );
   }
