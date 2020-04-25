@@ -2,8 +2,6 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import "./SliderContainer.scss";
-
-
 const tempMarks = [
     {
       value: 0,
@@ -72,7 +70,6 @@ const SliderContainer = (props) => {
         min={0}
         max={props.max}
         value={props.value}
-        // getAriaValueText={this.valueText}
         aria-labelledby= {props.type}
         step={props.step}
         valueLabelDisplay="auto"
