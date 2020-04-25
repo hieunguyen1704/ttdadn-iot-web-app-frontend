@@ -20,13 +20,21 @@ const tempMarks = [
     {
       value: 50,
       label: '50°C',
-    }
+    },
+    {
+      value: 100,
+      label: '100°C',
+    }    
   ];
   const humidMarks = [
     {
       value: 0,
       label: '0%',
     },
+    {
+      value: 30,
+      label: '30%',
+    },    
     {
       value: 60,
       label: '60%',
@@ -42,16 +50,16 @@ const tempMarks = [
           label: '0',
         },
         {
-          value: 1000,
-          label: '1000',
+          value: 300,
+          label: '300',
         },
         {
-            value: 2000,
-            label: '2000',
+            value: 600,
+            label: '600',
         },
         {
-          value: 4095,
-          label: '4095',
+          value: 1023,
+          label: '1023',
         }    
     ];  
 const SliderContainer = (props) => {
