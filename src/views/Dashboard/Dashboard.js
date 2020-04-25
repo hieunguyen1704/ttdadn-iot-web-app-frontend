@@ -19,9 +19,12 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { Router } from "@reach/router";
 import { mainListItems, secondaryListItems } from "./listItems";
-import LogIn from "../Module/Authentication/LogIn";
+
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
+import LogIn from '../Module/Authentication/Login'
+
+import Register from "../Module/Authentication/Register1";
 
 function Copyright() {
   return (
@@ -192,6 +195,8 @@ export default function Dashboard() {
               </Paper>
             </Grid> */}
             <Router>
+              {/* <LoginT path="testlogin" /> */}
+              <Register path='register' />
               <LogIn path="login" />
               <UserConfig path="user-config" />
               <DataInfo path="data-info" />
