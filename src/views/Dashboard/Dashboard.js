@@ -18,11 +18,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { Router } from "@reach/router";
-import { mainListItems, secondaryListItems } from "./listItems";
+import { mainListItems } from "./listItems";
 
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
-import LogIn from '../Module/Authentication/Login'
+import LogIn from '../Module/Authentication/LogIn'
 
 import Register from "../Module/Authentication/Register1";
 
@@ -181,8 +181,6 @@ export default function Dashboard() {
         </div>
         <Divider />
         <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
