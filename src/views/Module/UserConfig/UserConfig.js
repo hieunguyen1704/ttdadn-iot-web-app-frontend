@@ -5,6 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import ButtonArea from "./ButtonArea/ButtonArea";
 import HistoryConfig from "./HistoryConfig/HistoryConfig";
+import Axios from "axios";
+import {config} from "../../../config";
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -14,27 +16,9 @@ class UserConfig extends Component {
         humidThreshold: 60,
         lightThreshold: 600,
       },
-      currentUserId: 1,
-      historyConfig: [
-        {
-          humidThreshold: 66,
-          tempeThreshold: 20,
-          lightThreshold: 300,
-          createdAt: "2020-04-24T19:22:40.419Z",
-        },
-        {
-          humidThreshold: 50,
-          tempeThreshold: 22,
-          lightThreshold: 500,
-          createdAt: "2020-04-24T19:22:40.419Z",
-        },
-      ],
+      currentUserId: 38,
+      historyConfig: [],
     };
-  }
-  getCurrentTime() {
-    var tempDate = new Date();
-    var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate() +' '+ tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
-    return date;
   }
   changeHandler(type, event, newValue) {
     const newThreshold = {
@@ -46,18 +30,17 @@ class UserConfig extends Component {
     });
   }
   submitHandler(event) {
-    console.log("submit successful");
-    let { threshold, historyConfig } = this.state;
-    let newHistoryConfig = [...historyConfig];
-    let newConfig = {
-      humidThreshold: threshold.humidThreshold,
-      tempeThreshold: threshold.tempeThreshold,
-      lightThreshold: threshold.lightThreshold,
-      createdAt: this.getCurrentTime(),
-    };
-    newHistoryConfig.push(newConfig);
-    this.setState({
-      historyConfig: newHistoryConfig,
+    const createConfigURL =  config.dbURl + config.api.getConfig;
+    let { threshold ,currentUserId} = this.state;
+    let sendData = {...threshold};
+    sendData.userId = currentUserId;
+    Axios.post(createConfigURL,sendData).then(response=>{
+      if(response.data.data === "successful"){
+        window.location.reload();
+      }
+    })
+    .catch(error=>{
+      console.error(error)
     });
     event.preventDefault();
   }
@@ -73,10 +56,18 @@ class UserConfig extends Component {
   deletedHistoryHandler(configIndex) {
     const { historyConfig } = this.state;
     let newHistoryConfig = [...historyConfig];
-    newHistoryConfig.splice(configIndex, 1);
-    this.setState({
-      historyConfig: newHistoryConfig,
-    });
+    const deletedConfig = newHistoryConfig.splice(configIndex, 1);
+    const deletedConfigURL = config.dbURl + config.api.deleteConfig + deletedConfig[0].id;
+    Axios.get(deletedConfigURL).then(response=>{
+      if(response.data.data === "deleted successful"){
+        this.setState({
+          historyConfig: newHistoryConfig
+        })
+      }
+    })
+    .catch(error=>{
+      console.error(error);
+    })
   }
   checkedHistoryHandler(configIndex){
     const { threshold,historyConfig } = this.state;
@@ -87,6 +78,22 @@ class UserConfig extends Component {
     this.setState({
       threshold: newThreshold
     });
+  }
+  async ConfigInfo (){
+    const {currentUserId} = this.state;
+    const configOfUserURL =  config.dbURl + config.api.getConfig + currentUserId.toString();
+    try {
+      const response = await Axios.get(configOfUserURL);
+      this.setState({
+        historyConfig: response.data.data
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  componentDidMount(){
+    this.ConfigInfo();
   }
   render() {
     const { threshold, historyConfig } = this.state;
