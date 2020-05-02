@@ -6,6 +6,12 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import { navigate } from "@reach/router";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { logout } from '../Module/Authentication/action/auth'
+// import { useDispatch, useSelector } from 'react-redux'
+import signout from '../Module/Authentication/action/auth'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 export const mainListItems = (
   <div>
@@ -21,11 +27,9 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Orders" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
+    <ListItem button >
+      <ListItemText primary="Logout" />
+      <ExitToAppIcon primary="Log Out" />
     </ListItem>
   </div>
 );

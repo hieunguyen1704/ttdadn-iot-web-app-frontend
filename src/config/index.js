@@ -17,5 +17,7 @@ export const config = {
   // },
   api: {
     data: "/data/get-current-record",
+    register: "/user",
+    authoterize: "/auth"
   },
 };

@@ -25,6 +25,7 @@ import DataInfo from "../Module/DataInfo/DataInfo";
 import LogIn from '../Module/Authentication/LogIn'
 
 import Register from "../Module/Authentication/Register1";
+import { browserHistory } from 'react-router';
 
 function Copyright() {
   return (
@@ -192,7 +193,7 @@ export default function Dashboard() {
                 <div>hello</div>
               </Paper>
             </Grid> */}
-            <Router>
+            <Router >
               {/* <LoginT path="testlogin" /> */}
               <Register path='register' />
               <LogIn path="login" />
