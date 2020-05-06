@@ -10,20 +10,22 @@ import {
     REGISTER,
 } from '../actionsType/actiontype'
 
-const initialState = {
+const initState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: false,
-    user: null
+    user: null,
 }
 
-export default (state = initialState, action) => {
+export default (state = initState, action) => {
     const { type, payload } = action
+
     switch (type) {
         case LOGIN:
         case REGISTER:
             return {
-                ...state, loading: true
+                ...state,
+                loading: true
             }
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
@@ -32,7 +34,7 @@ export default (state = initialState, action) => {
                 ...state,
                 token: payload.token,
                 isAuthenticated: true,
-                loading: false,
+                loading: false
             }
         case USER_LOADED:
             return {

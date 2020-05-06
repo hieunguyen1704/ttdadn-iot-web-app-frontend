@@ -18,6 +18,8 @@ export const config = {
   api: {
     data: "/data/get-current-record",
     getConfig: "/user-config/",
-    deleteConfig: "/user-config/delete/"
+    deleteConfig: "/user-config/delete/",
+    register: "/user",
+    authoterize: "/auth"
   },
 };
