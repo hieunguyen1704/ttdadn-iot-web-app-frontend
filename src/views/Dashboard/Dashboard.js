@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,14 +19,20 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { Router } from "@reach/router";
 import { mainListItems } from "./listItems";
-
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
 import LogIn from '../Module/Authentication/LogIn'
 
 import Register from "../Module/Authentication/Register1";
-import { browserHistory } from 'react-router';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from "../Module/Authentication/action/auth";
+import { navigate } from "@reach/router";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PeopleIcon from "@material-ui/icons/People";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -131,7 +137,20 @@ export default function Dashboard() {
     setOpen(false);
   };
   // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+  const userchange = useSelector(state => state.auth.user)
+  const [username, setUsername] = useState('')
+  useEffect(() => {
+    if (userchange) {
+      setUsername(userchange.username)
+      console.log(username)
+    }
+  }, [userchange])
+  const onLogout = async (e) => {
+    dispatch(logout())
+    navigate("login")
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -161,10 +180,32 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+          <IconButton color="inherit" onClick={() => navigate("login")}>
+            {/* <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
-            </Badge>
+            </Badge> */}
+            {!isAuthenticated && <ListItem button >
+              <ListItemIcon>
+                <LockOpenIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>}
+          </IconButton>
+          {/* display username */}
+          <IconButton color="inherit" >
+            {isAuthenticated && <ListItem button>
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary={username} />
+            </ListItem>}
+          </IconButton>
+          {/* display logout icon  */}
+          <IconButton color="inherit">
+            {/* <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge> */}
+            {isAuthenticated && <ExitToAppIcon primary="Log Out" onClick={(e) => onLogout(e)} />}
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -206,6 +247,6 @@ export default function Dashboard() {
           </Box>
         </Container>
       </main>
-    </div>
+    </div >
   );
 }

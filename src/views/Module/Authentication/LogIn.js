@@ -64,12 +64,11 @@ function SignIn() {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({})
-  const userCurrent = useSelector(state => state.auth.user)
 
   const dispatch = useDispatch()
 
   const alertState = useSelector(state => state.alert)
-  const authState = useSelector(state => state.auth)
+
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
   const loading = useSelector(state => state.auth.loading);
 
@@ -82,26 +81,9 @@ function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    console.log("auth before login", isAuthenticated)
     dispatch(login(formData))
   }
 
-  // useEffect(() => {
-  //   dispatch({ type: RESET_ALERT })
-  // }, [])
-  useEffect(() => {
-    console.log(isAuthenticated)
-  }, [])
-
-  // useEffect(() => {
-  //   // alert(alertState)
-  //   if (alertState.login) {
-  //     alert(alertState.login);
-  //   }
-  // }, [alert])
-  useEffect(() => {
-    console.log(authState.user)
-  }, [authState])
   if (isAuthenticated) {
     navigate("dashboard")
   }

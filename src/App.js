@@ -7,12 +7,10 @@ import { loadUser } from './views/Module/Authentication/action/auth'
 
 
 if (localStorage.token) {
-  console.log("log token", localStorage.token)
   setAuthToken(localStorage.token)
 }
 const App = () => {
   useEffect(() => {
-    console.log("loadUser first")
     store.dispatch(loadUser())
   }, [])
   return (

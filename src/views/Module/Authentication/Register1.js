@@ -45,8 +45,7 @@ export default function Register() {
         password: '',
         password2: ''
     })
-    const [errors, setErrors] = useState({
-    })
+    const [errors, setErrors] = useState({})
     const [messageReturn, setMessageReturn] = useState('')
     // dispatch
     const dispatch = useDispatch()
