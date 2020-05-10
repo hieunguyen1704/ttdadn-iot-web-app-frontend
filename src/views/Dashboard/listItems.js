@@ -2,18 +2,20 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
+import SettingsIcon from '@material-ui/icons/Settings';
 import { navigate } from "@reach/router";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
+const username = 'hoitran';
 export const mainListItems = (
   <div>
     <ListItem button onClick={() => navigate("user-config")}>
       <ListItemIcon>
-        <DashboardIcon />
+        <SettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Setting" />
     </ListItem>
     <ListItem button onClick={() => navigate("data-info")}>
       <ListItemIcon>
@@ -21,11 +23,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Orders" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={() => navigate("login")}>
       <ListItemIcon>
-        <PeopleIcon />
+        <LockOpenIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Login" />
     </ListItem>
+
   </div>
 );
