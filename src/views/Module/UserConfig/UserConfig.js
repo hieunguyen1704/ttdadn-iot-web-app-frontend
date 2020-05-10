@@ -36,7 +36,6 @@ class UserConfig extends Component {
     const createConfigURL = config.dbURl + config.api.getConfig;
     let { threshold } = this.state;
     let sendData = { ...threshold };
-    sendData.userId = this.props.userId;
     Axios.post(createConfigURL, sendData)
       .then((response) => {
         if (response.data.data === "successful") {
@@ -87,7 +86,7 @@ class UserConfig extends Component {
   }
   async ConfigInfo() {
     const configOfUserURL =
-      config.dbURl + config.api.getConfig + this.props.userId.toString();
+      config.dbURl + config.api.getConfig;
     try {
       const response = await Axios.get(configOfUserURL);
       if (response.data.data.length !== this.state.historyConfig.length) {
