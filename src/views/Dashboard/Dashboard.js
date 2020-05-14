@@ -115,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: 800
   },
   paper: {
     padding: theme.spacing(2),
@@ -201,11 +204,11 @@ export default function Dashboard() {
             </ListItem>}
           </IconButton>
           {/* display logout icon  */}
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={(e) => onLogout(e)}>
             {/* <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge> */}
-            {isAuthenticated && <ExitToAppIcon primary="Log Out" onClick={(e) => onLogout(e)} />}
+            {isAuthenticated && <ExitToAppIcon primary="Log Out" />}
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -227,7 +230,7 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <Grid style={{ justifyContent: "center" }} container spacing={12}>
             {/* Chart */}
             {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>

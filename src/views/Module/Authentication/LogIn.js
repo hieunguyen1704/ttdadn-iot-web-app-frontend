@@ -19,6 +19,7 @@ import { navigate } from "@reach/router";
 import { config } from "../../../config";
 import { browserHistory } from 'react-router';
 import { RESET_ALERT } from './actionsType/actiontype'
+import './theme/LogIn.scss'
 function Copyright() {
 
 
@@ -89,71 +90,78 @@ function SignIn() {
   }
 
   return (
-    <Spin spinning={loading} tip='Loading...'>
-      <Container component="main" maxWidth="xs" md={6} xs={12}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar} >
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5" align="center">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)} >
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              onChange={e => onChange(e)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={e => onChange(e)}
-            />
+    <Grid
+      container spacing={3} className="flex-center"
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
+    >
+      <Spin spinning={loading} tip='Loading...'>
+        <Container component="main" maxWidth="xs" md={6} xs={12}>
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar} >
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5" align="center">
+              Sign in
+          </Typography>
+            <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)} >
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+                onChange={e => onChange(e)}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => onChange(e)}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
                 </Button>
-            {alertState.login && <span className="help-block">{alertState.login}</span>}
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+              {alertState.login && <span className="help-block">{alertState.login}</span>}
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
                             </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-        {/* <Box mt={8}>
+            </form>
+          </div>
+          {/* <Box mt={8}>
           <Copyright />
         </Box> */}
-      </Container>
-    </Spin>
+        </Container>
+      </Spin>
+    </Grid>
+
+
   );
 }
 export default SignIn;
