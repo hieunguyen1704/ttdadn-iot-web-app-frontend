@@ -10,6 +10,7 @@ import { config } from "../../../config";
 import { connect } from "react-redux";
 import CurrentSetting from "./CurrentSetting/CurrentSetting";
 import Loading from "./Loading/Loading";
+import DeleteAlert from './DeleteAlert/DeleteAlert';
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +22,8 @@ class UserConfig extends Component {
       },
       historyConfig: [],
       currentConfig: {},
+      displayAlert: false,
+      deleteConfigIndex: undefined
     };
   }
   changeHandler(type, event, newValue) {
@@ -57,7 +60,7 @@ class UserConfig extends Component {
     });
   }
   deletedHistoryHandler(configIndex) {
-    const { historyConfig,currentConfig } = this.state;
+    const { historyConfig} = this.state;
     let newHistoryConfig = [...historyConfig];
     const deletedConfig = newHistoryConfig.splice(configIndex, 1);
     const deletedConfigURL =
@@ -67,15 +70,16 @@ class UserConfig extends Component {
         if (response.data.data === "deleted successful") {
           this.setState({
             historyConfig: newHistoryConfig,
+            displayAlert: false,
+            deleteConfigIndex: undefined
           });
-          if(currentConfig){
-            if(deletedConfig[0].id === currentConfig.id){ // if id current config equal to id deleted config
-                this.setState({
-                  currentConfig: {}
-                });
-            }
-          }
-
+          // if(currentConfig){
+          //   if(deletedConfig[0].id === currentConfig.id){ 
+          //       this.setState({
+          //         currentConfig: {}
+          //       });
+          //   }
+          // }
         }
       })
       .catch((error) => {
@@ -100,11 +104,24 @@ class UserConfig extends Component {
       if (response.data.data.length !== this.state.historyConfig.length) {
         this.setState({
           historyConfig: response.data.data,
-          currentConfig:
-            response.data.data.length > 0
-              ? response.data.data[response.data.data.length - 1] //get last config
-              : {},
+          // currentConfig:
+          //   response.data.data.length > 0
+          //     ? response.data.data[response.data.data.length - 1] //get last config
+          //     : {},
         });
+      }
+      if(response.data.data.length > 0){
+        if(response.data.data[response.data.data.length - 1].id !== this.state.currentConfig.id){
+          this.setState({
+            currentConfig: response.data.data[response.data.data.length - 1]
+          });
+        }
+      }else{
+        if(this.state.currentConfig){
+          this.setState({
+            currentConfig: {}
+          });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -120,8 +137,39 @@ class UserConfig extends Component {
       this.ConfigInfo();
     }
   }
+  // displayAlert(){
+  //   this.setState({
+  //     displayAlert: true
+  //   });
+   // }
+  verifyDeleteHandler(configIndex){
+    // const {isDelete} = this.state;
+    this.setState({
+      displayAlert:true,
+      deleteConfigIndex: configIndex
+    });
+    // if(isDelete){
+    //   console.log("Delete");
+    //   this.deletedHistoryHandler(configIndex);
+    // }
+    // else{
+    //   this.setState({
+    //     displayAlert:false
+    //   });
+    // }
+  }
+  agreeDeleteHandler(){
+    console.log(this.state.deleteConfigIndex);
+    this.deletedHistoryHandler(this.state.deleteConfigIndex)
+  }
+  disagreeDeleteHandler(){
+    this.setState({
+      displayAlert: false,
+      deleteConfigIndex: undefined
+    });
+  }
   render() {
-    const { threshold, historyConfig } = this.state;
+    const { threshold, historyConfig,displayAlert } = this.state;
     const sliderContainerList = Object.keys(threshold).map((elKey) => {
       return (
         <Grid item md={10} xs={12} key={elKey}>
@@ -149,7 +197,7 @@ class UserConfig extends Component {
     });
     if (this.props.userId) {
       return (
-        <Container maxWidth="lg" style={{ width: "80vw" }}>
+        <Container maxWidth="lg" style={{ width: "80vw"}}>
           <CurrentSetting currentConfig={this.state.currentConfig} />
           <form onSubmit={this.submitHandler.bind(this)}>
             <Grid container spacing={3} className="flex-center">
@@ -162,8 +210,10 @@ class UserConfig extends Component {
               </Grid>
             </Grid>
           </form>
+          {displayAlert ? <DeleteAlert agreed={this.agreeDeleteHandler.bind(this)} disagreed={this.disagreeDeleteHandler.bind(this)}/> : null}
           <HistoryConfig
             history={historyConfig}
+            verifyDelete= {this.verifyDeleteHandler.bind(this)}
             deleted={this.deletedHistoryHandler.bind(this)}
             checked={this.checkedHistoryHandler.bind(this)}
           />
@@ -196,7 +246,7 @@ class UserConfig extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   if (state.auth.isAuthenticated) {
     return {
       userId: state.auth.user.id,

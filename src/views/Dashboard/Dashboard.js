@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
     marginLeft: "auto",
     marginRight: "auto",
-    width: 800
+    // width: 800
   },
   paper: {
     padding: theme.spacing(2),
@@ -229,7 +229,7 @@ export default function Dashboard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container} style={{overflowX: "hidden"}}>
           <Grid style={{ justifyContent: "center" }} container spacing={12}>
             {/* Chart */}
             {/* <Grid item xs={12} md={8} lg={9}>
