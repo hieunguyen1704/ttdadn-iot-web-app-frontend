@@ -33,6 +33,7 @@ class UserConfig extends Component {
     });
   }
   submitHandler(event) {
+    event.preventDefault();
     const createConfigURL = config.dbURl + config.api.getConfig;
     let { threshold } = this.state;
     let sendData = { ...threshold };
@@ -45,7 +46,6 @@ class UserConfig extends Component {
       .catch((error) => {
         console.error(error);
       });
-    event.preventDefault();
   }
   resetHandler() {
     this.setState({
@@ -57,7 +57,7 @@ class UserConfig extends Component {
     });
   }
   deletedHistoryHandler(configIndex) {
-    const { historyConfig } = this.state;
+    const { historyConfig,currentConfig } = this.state;
     let newHistoryConfig = [...historyConfig];
     const deletedConfig = newHistoryConfig.splice(configIndex, 1);
     const deletedConfigURL =
@@ -68,6 +68,14 @@ class UserConfig extends Component {
           this.setState({
             historyConfig: newHistoryConfig,
           });
+          if(currentConfig){
+            if(deletedConfig[0].id === currentConfig.id){ // if id current config equal to id deleted config
+                this.setState({
+                  currentConfig: {}
+                });
+            }
+          }
+
         }
       })
       .catch((error) => {
@@ -94,7 +102,7 @@ class UserConfig extends Component {
           historyConfig: response.data.data,
           currentConfig:
             response.data.data.length > 0
-              ? response.data.data[response.data.data.length - 1]
+              ? response.data.data[response.data.data.length - 1] //get last config
               : {},
         });
       }
