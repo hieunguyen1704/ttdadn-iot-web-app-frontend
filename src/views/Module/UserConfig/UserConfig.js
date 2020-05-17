@@ -11,6 +11,8 @@ import { connect } from "react-redux";
 import CurrentSetting from "./CurrentSetting/CurrentSetting";
 import Loading from "./Loading/Loading";
 import DeleteAlert from './DeleteAlert/DeleteAlert';
+import Switch from './Switch/Switch';
+import MotorState from './MotorState/MotorState';
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +25,8 @@ class UserConfig extends Component {
       historyConfig: [],
       currentConfig: {},
       displayAlert: false,
-      deleteConfigIndex: undefined
+      deleteConfigIndex: undefined,
+      isTurn: null
     };
   }
   changeHandler(type, event, newValue) {
@@ -137,26 +140,11 @@ class UserConfig extends Component {
       this.ConfigInfo();
     }
   }
-  // displayAlert(){
-  //   this.setState({
-  //     displayAlert: true
-  //   });
-   // }
   verifyDeleteHandler(configIndex){
-    // const {isDelete} = this.state;
     this.setState({
       displayAlert:true,
       deleteConfigIndex: configIndex
     });
-    // if(isDelete){
-    //   console.log("Delete");
-    //   this.deletedHistoryHandler(configIndex);
-    // }
-    // else{
-    //   this.setState({
-    //     displayAlert:false
-    //   });
-    // }
   }
   agreeDeleteHandler(){
     console.log(this.state.deleteConfigIndex);
@@ -167,6 +155,11 @@ class UserConfig extends Component {
       displayAlert: false,
       deleteConfigIndex: undefined
     });
+  }
+  getTurnOnState(check){
+    this.setState({
+      isTurn: check
+    })
   }
   render() {
     const { threshold, historyConfig,displayAlert } = this.state;
@@ -198,6 +191,10 @@ class UserConfig extends Component {
     if (this.props.userId) {
       return (
         <Container maxWidth="lg" style={{ width: "80vw"}}>
+          <MotorState isOn = {this.state.isTurn} />
+          {/* <span style={{position: "fixed", top: 200,right: 20,border:"1px solid black",padding: 15,borderRadius:"50%"}}>ON</span> */}
+          {this.props.isAuto ?(
+          <div>
           <CurrentSetting currentConfig={this.state.currentConfig} />
           <form onSubmit={this.submitHandler.bind(this)}>
             <Grid container spacing={3} className="flex-center">
@@ -217,6 +214,16 @@ class UserConfig extends Component {
             deleted={this.deletedHistoryHandler.bind(this)}
             checked={this.checkedHistoryHandler.bind(this)}
           />
+          </div>) :
+          <Grid container justify="center" alignItems="center" direction="column">
+              <Grid item >
+                <h2>Manual Setting:</h2>
+              </Grid>
+              <Grid item>
+                <Switch turnOn ={this.getTurnOnState.bind(this)}/>
+              </Grid>
+           </Grid>
+          }
         </Container>
       );
     } else {
@@ -246,11 +253,13 @@ class UserConfig extends Component {
   }
 }
 function mapStateToProps(state) {
-  // console.log(state);
+  console.log(state);
   if (state.auth.isAuthenticated) {
     return {
       userId: state.auth.user.id,
       isAuthenticated: state.auth.isAuthenticated,
+      isAuto: state.auth.user.isAuto,
+      isAmin: state.auth.user.isAmin
     };
   } else {
     return {
