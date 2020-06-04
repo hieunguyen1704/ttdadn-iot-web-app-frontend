@@ -91,7 +91,7 @@ export default function HistoryConfig(props) {
                       <IconButton
                         aria-label="delete"
                         style={{ color: "#d63031" }}
-                        onClick={() => props.deleted(index)}
+                        onClick= {()=>props.verifyDelete(index)}
                       >
                         <DeleteIcon />
                       </IconButton>

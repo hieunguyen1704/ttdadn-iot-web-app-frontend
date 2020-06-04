@@ -10,13 +10,11 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import { Router } from "@reach/router";
 import { mainListItems } from "./listItems";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -115,6 +113,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%"
   },
   paper: {
     padding: theme.spacing(2),
@@ -147,6 +148,7 @@ export default function Dashboard() {
       console.log(username)
     }
   }, [userchange])
+  // eslint-disable-next-line no-unused-vars
   const onLogout = async (e) => {
     dispatch(logout())
     navigate("login")
@@ -201,11 +203,11 @@ export default function Dashboard() {
             </ListItem>}
           </IconButton>
           {/* display logout icon  */}
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={(e) => onLogout(e)}>
             {/* <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge> */}
-            {isAuthenticated && <ExitToAppIcon primary="Log Out" onClick={(e) => onLogout(e)} />}
+            {isAuthenticated && <ExitToAppIcon primary="Log Out" />}
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -227,7 +229,7 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <Grid style={{ justifyContent: "center" }} container spacing={12}>
             {/* Chart */}
             {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
@@ -247,6 +249,6 @@ export default function Dashboard() {
           </Box>
         </Container>
       </main>
-    </div >
+    </div>
   );
 }

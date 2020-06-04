@@ -30,7 +30,7 @@ export default function CurrentSetting(props) {
         <Grid item md={10} xs={12} className={classes.list}>
           <List component="nav" aria-label="main mailbox folders">
             <Grid container spacing={3}>
-              <Grid item md={4} xs={12}>
+              <Grid item sm={4} xs={12}>
                 <ListItem>
                   <ListItemIcon>
                     <WhatshotIcon color="secondary"/>
@@ -38,7 +38,7 @@ export default function CurrentSetting(props) {
                   <ListItemText  primary={Object.keys(props.currentConfig).length > 0  ? props.currentConfig.tempeThreshold +"°C" : "..."}/>
                 </ListItem>
               </Grid>
-              <Grid item md={4} xs={12}>
+              <Grid item sm={4} xs={12}>
                 <ListItem>
                   <ListItemIcon>
                     <OpacityIcon color="secondary"/>
@@ -46,7 +46,7 @@ export default function CurrentSetting(props) {
                   <ListItemText primary={Object.keys(props.currentConfig).length > 0  ? props.currentConfig.humidThreshold + "%" : "..."}/>
                 </ListItem>
               </Grid>
-              <Grid item md={4} xs={12}>
+              <Grid item sm={4} xs={12}>
                 <ListItem>
                   <ListItemIcon>
                     <Brightness5Icon color="secondary"/>
