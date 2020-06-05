@@ -20,6 +20,7 @@ export const config = {
     getConfig: "/user-config/",
     deleteConfig: "/user-config/delete/",
     register: "/user",
-    authoterize: "/auth"
+    authoterize: "/auth",
+    switch: "/auth/configAuto"
   },
 };

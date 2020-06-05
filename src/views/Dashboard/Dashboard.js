@@ -203,8 +203,7 @@ export default function Dashboard() {
               <ListItemText primary={username} />
             </ListItem>}
           </IconButton>
-          {/* {isAuthenticated && <switchComponent />} */}
-          <SwitchComponent />
+          {isAuthenticated && <SwitchComponent />}
           {/* display logout icon  */}
           <IconButton color="inherit" onClick={(e) => onLogout(e)}>
             {/* <Badge badgeContent={4} color="secondary">
