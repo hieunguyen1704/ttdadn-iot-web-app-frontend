@@ -31,6 +31,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PeopleIcon from "@material-ui/icons/People";
+import SwitchComponent from '../Module/Authentication/components/switchComponent';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -202,6 +203,8 @@ export default function Dashboard() {
               <ListItemText primary={username} />
             </ListItem>}
           </IconButton>
+          {/* {isAuthenticated && <switchComponent />} */}
+          <SwitchComponent />
           {/* display logout icon  */}
           <IconButton color="inherit" onClick={(e) => onLogout(e)}>
             {/* <Badge badgeContent={4} color="secondary">
