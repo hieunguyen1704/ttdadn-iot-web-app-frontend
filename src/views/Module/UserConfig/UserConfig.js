@@ -76,13 +76,6 @@ class UserConfig extends Component {
             displayAlert: false,
             deleteConfigIndex: undefined
           });
-          // if(currentConfig){
-          //   if(deletedConfig[0].id === currentConfig.id){ 
-          //       this.setState({
-          //         currentConfig: {}
-          //       });
-          //   }
-          // }
         }
       })
       .catch((error) => {
@@ -113,6 +106,7 @@ class UserConfig extends Component {
           //     : {},
         });
       }
+      //get last config of user
       if(response.data.data.length > 0){
         if(response.data.data[response.data.data.length - 1].id !== this.state.currentConfig.id){
           this.setState({
@@ -253,7 +247,7 @@ class UserConfig extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   if (state.auth.isAuthenticated) {
     return {
       userId: state.auth.user.id,
