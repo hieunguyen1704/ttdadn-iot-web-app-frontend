@@ -7,27 +7,38 @@ const data = [
   {
     label: "Series 1",
     data: [
-      [0, 1],
-      [1, 2],
-      [2, 4],
-      [3, 2],
-      [4, 7],
+      [new Date("2020-04-01T01:10:00"), 1],
+      [new Date("2020-04-01T01:15:00"), 2],
+      [new Date("2020-04-01T01:20:00"), 4],
+      [new Date("2020-04-01T01:35:00"), 2],
+      [new Date("2020-04-01T01:30:00"), 7],
     ],
   },
   {
     label: "Series 2",
     data: [
-      [0, 3],
-      [1, 1],
-      [2, 5],
-      [3, 6],
-      [4, 4],
+      [new Date("2020-04-01T01:10:00"), 3],
+      [new Date("2020-04-01T01:15:00"), 1],
+      [new Date("2020-04-01T01:20:00"), 5],
+      [new Date("2020-04-01T01:25:00"), 6],
+      [new Date("2020-04-01T01:30:00"), 4],
     ],
   },
 ];
 
+const options = {
+  xAxes: [
+    {
+      type: "time",
+      time: {
+        unit: "month",
+      },
+    },
+  ],
+};
+
 const axes = [
-  { primary: true, type: "linear", position: "bottom" },
+  { primary: true, type: "time", position: "bottom" },
   { type: "linear", position: "left" },
 ];
 
@@ -54,7 +65,7 @@ const DataInfo = () => {
           height: "300px",
         }}
       >
-        <Chart data={data} axes={axes} tooltip />
+        <Chart data={data} axes={axes} options={options} tooltip />
       </div>
     </div>
   );
