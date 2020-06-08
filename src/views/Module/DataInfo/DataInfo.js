@@ -3,6 +3,7 @@ import "./theme/DataInfo.scss";
 import { Chart } from "react-charts";
 import Axios from "axios";
 import { config } from "../../../config";
+import ControlledOpenSelect from "./Select/Select"
 const data = [
   {
     label: "Series 1",
@@ -58,6 +59,7 @@ const DataInfo = () => {
   }, []);
   return (
     <div className="data-info-component">
+      <ControlledOpenSelect />
       <div
         className="data-chart"
         style={{
