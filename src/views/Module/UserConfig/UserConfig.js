@@ -13,6 +13,7 @@ import Loading from "./Loading/Loading";
 import DeleteAlert from './DeleteAlert/DeleteAlert';
 import Switch from './Switch/Switch';
 import MotorState from './MotorState/MotorState';
+import FormDialog from './Dialog/SetName';
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +23,14 @@ class UserConfig extends Component {
         humidThreshold: 60,
         lightThreshold: 600,
       },
+      // name: "default", 
       historyConfig: [],
       currentConfig: {},
       displayAlert: false,
       deleteConfigIndex: undefined,
-      isTurn: null
+      isTurn: null,
+      displayFormDialog : false,
+      sendData: {}
     };
   }
   changeHandler(type, event, newValue) {
@@ -40,18 +44,34 @@ class UserConfig extends Component {
   }
   submitHandler(event) {
     event.preventDefault();
-    const createConfigURL = config.dbURl + config.api.getConfig;
-    let { threshold } = this.state;
-    let sendData = { ...threshold };
-    Axios.post(createConfigURL, sendData)
-      .then((response) => {
-        if (response.data.data === "successful") {
-          window.location.reload();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // display set name form 
+    this.setState({
+      displayFormDialog: true
+    });
+    // const createConfigURL = config.dbURl + config.api.getConfig;
+    let { threshold} = this.state;
+    let sendData = { ...threshold, name: "default" };
+
+    this.setState({
+      sendData
+    });
+    // if(setNameCompleted){
+    //   Axios.post(createConfigURL, sendData)
+    //   .then((response) => {
+    //     if (response.data.data === "successful") {
+    //       this.setState({
+    //         setNameCompleted: false
+    //       });
+    //       window.location.reload();
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     this.setState({
+    //       setNameCompleted: false
+    //     });
+    //     console.error(error);
+    //   });
+    // }
   }
   resetHandler() {
     this.setState({
@@ -67,7 +87,7 @@ class UserConfig extends Component {
     let newHistoryConfig = [...historyConfig];
     const deletedConfig = newHistoryConfig.splice(configIndex, 1);
     const deletedConfigURL =
-      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;
+      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;    
     Axios.get(deletedConfigURL)
       .then((response) => {
         if (response.data.data === "deleted successful") {
@@ -155,8 +175,20 @@ class UserConfig extends Component {
       isTurn: check
     })
   }
+  // setConfigName(name){
+  //   console.log(name);
+  //   this.setState({
+  //     name: name,
+  //     setNameCompleted: true
+  //   });
+  // }
+  // setDefaultName(){
+  //   this.setState({
+  //      setNameCompleted: true
+  //   });
+  // }
   render() {
-    const { threshold, historyConfig,displayAlert } = this.state;
+    const { threshold, historyConfig,displayAlert, displayFormDialog, sendData } = this.state;
     const sliderContainerList = Object.keys(threshold).map((elKey) => {
       return (
         <Grid item md={10} xs={12} key={elKey}>
@@ -202,6 +234,8 @@ class UserConfig extends Component {
             </Grid>
           </form>
           {displayAlert ? <DeleteAlert agreed={this.agreeDeleteHandler.bind(this)} disagreed={this.disagreeDeleteHandler.bind(this)}/> : null}
+          {/* display set name form  */}
+          {displayFormDialog && <FormDialog sendData={sendData}/>}
           <HistoryConfig
             history={historyConfig}
             verifyDelete= {this.verifyDeleteHandler.bind(this)}

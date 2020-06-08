@@ -51,17 +51,18 @@ export default function HistoryConfig(props) {
                   <Hidden mdDown>
                     <StyledTableCell>ID</StyledTableCell>
                   </Hidden>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="center">
                     Temperature&nbsp;(°C)
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="center">
                     Humidity&nbsp;(%)
                   </StyledTableCell>
-                  <StyledTableCell align="right">Light</StyledTableCell>
+                  <StyledTableCell align="center">Light</StyledTableCell>
+                  <StyledTableCell align="center">Name</StyledTableCell>
                   <Hidden mdDown>
-                    <StyledTableCell align="right">Time</StyledTableCell>
+                    <StyledTableCell align="center">Time</StyledTableCell>
                   </Hidden>
-                  <StyledTableCell align="right">Action</StyledTableCell>
+                  <StyledTableCell align="center">Action</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -73,21 +74,25 @@ export default function HistoryConfig(props) {
                       </StyledTableCell>
                     </Hidden>
 
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="center">
                       {el.tempeThreshold}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="center">
                       {el.humidThreshold}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="center">
                       {el.lightThreshold}
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {el.name}
+                    </StyledTableCell>
                     <Hidden mdDown>
-                      <StyledTableCell align="right">
-                        {el.createdAt}
+                      <StyledTableCell align="center">
+                        {/* change to local time */}
+                        {new Date(el.createdAt).toLocaleString("en-US", {timeZone: 'Asia/Jakarta'})}
                       </StyledTableCell>
                     </Hidden>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="center">
                       <IconButton
                         aria-label="delete"
                         style={{ color: "#d63031" }}
