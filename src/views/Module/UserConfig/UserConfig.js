@@ -10,10 +10,10 @@ import { config } from "../../../config";
 import { connect } from "react-redux";
 import CurrentSetting from "./CurrentSetting/CurrentSetting";
 import Loading from "./Loading/Loading";
-import DeleteAlert from './DeleteAlert/DeleteAlert';
-import Switch from './Switch/Switch';
-import MotorState from './MotorState/MotorState';
-import FormDialog from './Dialog/SetName';
+import DeleteAlert from "./DeleteAlert/DeleteAlert";
+import Switch from "./Switch/Switch";
+import MotorState from "./MotorState/MotorState";
+import FormDialog from "./Dialog/SetName";
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -23,14 +23,14 @@ class UserConfig extends Component {
         humidThreshold: 60,
         lightThreshold: 600,
       },
-      // name: "default", 
+      // name: "default",
       historyConfig: [],
       currentConfig: {},
       displayAlert: false,
       deleteConfigIndex: undefined,
       isTurn: null,
-      displayFormDialog : false,
-      sendData: {}
+      displayFormDialog: false,
+      sendData: {},
     };
   }
   changeHandler(type, event, newValue) {
@@ -44,34 +44,17 @@ class UserConfig extends Component {
   }
   submitHandler(event) {
     event.preventDefault();
-    // display set name form 
+    // display set name form
     this.setState({
-      displayFormDialog: true
+      displayFormDialog: true,
     });
     // const createConfigURL = config.dbURl + config.api.getConfig;
-    let { threshold} = this.state;
+    let { threshold } = this.state;
     let sendData = { ...threshold, name: "default" };
 
     this.setState({
-      sendData
+      sendData,
     });
-    // if(setNameCompleted){
-    //   Axios.post(createConfigURL, sendData)
-    //   .then((response) => {
-    //     if (response.data.data === "successful") {
-    //       this.setState({
-    //         setNameCompleted: false
-    //       });
-    //       window.location.reload();
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     this.setState({
-    //       setNameCompleted: false
-    //     });
-    //     console.error(error);
-    //   });
-    // }
   }
   resetHandler() {
     this.setState({
@@ -83,18 +66,18 @@ class UserConfig extends Component {
     });
   }
   deletedHistoryHandler(configIndex) {
-    const { historyConfig} = this.state;
+    const { historyConfig } = this.state;
     let newHistoryConfig = [...historyConfig];
     const deletedConfig = newHistoryConfig.splice(configIndex, 1);
     const deletedConfigURL =
-      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;    
+      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;
     Axios.get(deletedConfigURL)
       .then((response) => {
         if (response.data.data === "deleted successful") {
           this.setState({
             historyConfig: newHistoryConfig,
             displayAlert: false,
-            deleteConfigIndex: undefined
+            deleteConfigIndex: undefined,
           });
         }
       })
@@ -113,30 +96,28 @@ class UserConfig extends Component {
     });
   }
   async ConfigInfo() {
-    const configOfUserURL =
-      config.dbURl + config.api.getConfig;
+    const configOfUserURL = config.dbURl + config.api.getConfig;
     try {
       const response = await Axios.get(configOfUserURL);
       if (response.data.data.length !== this.state.historyConfig.length) {
         this.setState({
           historyConfig: response.data.data,
-          // currentConfig:
-          //   response.data.data.length > 0
-          //     ? response.data.data[response.data.data.length - 1] //get last config
-          //     : {},
         });
       }
       //get last config of user
-      if(response.data.data.length > 0){
-        if(response.data.data[response.data.data.length - 1].id !== this.state.currentConfig.id){
+      if (response.data.data.length > 0) {
+        if (
+          response.data.data[response.data.data.length - 1].id !==
+          this.state.currentConfig.id
+        ) {
           this.setState({
-            currentConfig: response.data.data[response.data.data.length - 1]
+            currentConfig: response.data.data[response.data.data.length - 1],
           });
         }
-      }else{
-        if(this.state.currentConfig){
+      } else {
+        if (this.state.currentConfig) {
           this.setState({
-            currentConfig: {}
+            currentConfig: {},
           });
         }
       }
@@ -154,41 +135,36 @@ class UserConfig extends Component {
       this.ConfigInfo();
     }
   }
-  verifyDeleteHandler(configIndex){
+  verifyDeleteHandler(configIndex) {
     this.setState({
-      displayAlert:true,
-      deleteConfigIndex: configIndex
+      displayAlert: true,
+      deleteConfigIndex: configIndex,
     });
   }
-  agreeDeleteHandler(){
+  agreeDeleteHandler() {
     console.log(this.state.deleteConfigIndex);
-    this.deletedHistoryHandler(this.state.deleteConfigIndex)
+    this.deletedHistoryHandler(this.state.deleteConfigIndex);
   }
-  disagreeDeleteHandler(){
+  disagreeDeleteHandler() {
     this.setState({
       displayAlert: false,
-      deleteConfigIndex: undefined
+      deleteConfigIndex: undefined,
     });
   }
-  getTurnOnState(check){
+  getTurnOnState(check) {
     this.setState({
-      isTurn: check
-    })
+      isTurn: check,
+    });
   }
-  // setConfigName(name){
-  //   console.log(name);
-  //   this.setState({
-  //     name: name,
-  //     setNameCompleted: true
-  //   });
-  // }
-  // setDefaultName(){
-  //   this.setState({
-  //      setNameCompleted: true
-  //   });
-  // }
+
   render() {
-    const { threshold, historyConfig,displayAlert, displayFormDialog, sendData } = this.state;
+    const {
+      threshold,
+      historyConfig,
+      displayAlert,
+      displayFormDialog,
+      sendData,
+    } = this.state;
     const sliderContainerList = Object.keys(threshold).map((elKey) => {
       return (
         <Grid item md={10} xs={12} key={elKey}>
@@ -216,63 +192,66 @@ class UserConfig extends Component {
     });
     if (this.props.userId) {
       return (
-        <Container maxWidth="lg" style={{ width: "80vw"}}>
-          <MotorState isOn = {this.state.isTurn} />
-          {/* <span style={{position: "fixed", top: 200,right: 20,border:"1px solid black",padding: 15,borderRadius:"50%"}}>ON</span> */}
-          {this.props.isAuto ?(
-          <div>
-          <CurrentSetting currentConfig={this.state.currentConfig} />
-          <form onSubmit={this.submitHandler.bind(this)}>
-            <Grid container spacing={3} className="flex-center">
-              <Grid item md={10} xs={12}>
-                <h1>Setting</h1>
-              </Grid>
-              {sliderContainerList}
-              <Grid item md={6} xs={12}>
-                <ButtonArea reset={this.resetHandler.bind(this)} />
-              </Grid>
-            </Grid>
-          </form>
-          {displayAlert ? <DeleteAlert agreed={this.agreeDeleteHandler.bind(this)} disagreed={this.disagreeDeleteHandler.bind(this)}/> : null}
-          {/* display set name form  */}
-          {displayFormDialog && <FormDialog sendData={sendData}/>}
-          <HistoryConfig
-            history={historyConfig}
-            verifyDelete= {this.verifyDeleteHandler.bind(this)}
-            deleted={this.deletedHistoryHandler.bind(this)}
-            checked={this.checkedHistoryHandler.bind(this)}
-          />
-          </div>) :
-          <Grid container justify="center" alignItems="center" direction="column">
-              <Grid item >
+        <Container maxWidth="lg" style={{ width: "80vw" }}>
+          <MotorState isOn={this.state.isTurn} />
+          {this.props.isAuto && this.props.isAdmin ? (
+            <div>
+              <CurrentSetting currentConfig={this.state.currentConfig} />
+              <form onSubmit={this.submitHandler.bind(this)}>
+                <Grid container spacing={3} className="flex-center">
+                  <Grid item md={10} xs={12}>
+                    <h1>Setting</h1>
+                  </Grid>
+                  {sliderContainerList}
+                  <Grid item md={6} xs={12}>
+                    <ButtonArea reset={this.resetHandler.bind(this)} />
+                  </Grid>
+                </Grid>
+              </form>
+              {displayAlert ? (
+                <DeleteAlert
+                  agreed={this.agreeDeleteHandler.bind(this)}
+                  disagreed={this.disagreeDeleteHandler.bind(this)}
+                />
+              ) : null}
+              {/* display set name form  */}
+              {displayFormDialog && <FormDialog sendData={sendData} />}
+              <HistoryConfig
+                history={historyConfig}
+                verifyDelete={this.verifyDeleteHandler.bind(this)}
+                deleted={this.deletedHistoryHandler.bind(this)}
+                checked={this.checkedHistoryHandler.bind(this)}
+              />
+            </div>
+          ) : (
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              direction="column"
+            >
+              <Grid item>
                 <h2>Manual Setting:</h2>
               </Grid>
               <Grid item>
-                <Switch turnOn ={this.getTurnOnState.bind(this)}/>
+                <Switch turnOn={this.getTurnOnState.bind(this)} />
               </Grid>
-           </Grid>
-          }
+            </Grid>
+          )}
         </Container>
       );
     } else {
-      if (this.props.isAuthenticated === false) {
-        return (
-          <Container maxWidth="lg" style={{ width: "80vw" }}>
-            <Grid container spacing={3} className="flex-center">
-              <Grid item md={10} xs={12}>
-                <h1 style={{ textAlign: "center" }}>
-                  Please log in before setting config
-                </h1>
-              </Grid>
-            </Grid>
-          </Container>
-        );
-      }
       return (
         <Container maxWidth="lg" style={{ width: "80vw" }}>
           <Grid container spacing={3} className="flex-center">
             <Grid item md={10} xs={12}>
-              <Loading />
+              {this.props.isAuthenticated === false ? (
+                <h1 style={{ textAlign: "center" }}>
+                  Please log in before setting config
+                </h1>
+              ) : (
+                <Loading />
+              )}
             </Grid>
           </Grid>
         </Container>
@@ -287,7 +266,7 @@ function mapStateToProps(state) {
       userId: state.auth.user.id,
       isAuthenticated: state.auth.isAuthenticated,
       isAuto: state.auth.user.isAuto,
-      isAmin: state.auth.user.isAmin
+      isAdmin: state.auth.user.isAdmin,
     };
   } else {
     return {
