@@ -1,19 +1,23 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Axios from "axios";
-import {config} from "../../../../config"
+import { config } from "../../../../config";
+import Slide from '@material-ui/core/Slide';
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(true);
   const [name, setName] = React.useState("");
-  const handleChange = (event) =>{
+  const handleChange = (event) => {
     setName(event.target.value);
-  }
+  };
 
   const handleClose = () => {
     // props.canceled();
@@ -21,7 +25,7 @@ export default function FormDialog(props) {
     const newSendData = props.sendData;
     newSendData.name = "default";
     const createConfigURL = config.dbURl + config.api.getConfig;
-      Axios.post(createConfigURL, newSendData)
+    Axios.post(createConfigURL, newSendData)
       .then((response) => {
         if (response.data.data === "successful") {
           setOpen(false);
@@ -35,10 +39,10 @@ export default function FormDialog(props) {
   const handleSetName = () => {
     // props.accepted(name);
     //set name and submit data
-    const newSendData =  props.sendData;
+    const newSendData = props.sendData;
     newSendData.name = name;
     const createConfigURL = config.dbURl + config.api.getConfig;
-      Axios.post(createConfigURL, newSendData)
+    Axios.post(createConfigURL, newSendData)
       .then((response) => {
         if (response.data.data === "successful") {
           setOpen(false);
@@ -48,15 +52,21 @@ export default function FormDialog(props) {
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        TransitionComponent={Transition}
+      >
         <DialogTitle id="form-dialog-title">Set Config Name</DialogTitle>
         <DialogContent>
           <DialogContentText>
-                You can set the name to your config otherwise the system will use the default name.
+            You can set the name to your config otherwise the system will use
+            the default name.
           </DialogContentText>
           <TextField
             // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -67,7 +77,7 @@ export default function FormDialog(props) {
             type="text"
             fullWidth
             onChange={handleChange}
-            value = {name}
+            value={name}
           />
         </DialogContent>
         <DialogActions>

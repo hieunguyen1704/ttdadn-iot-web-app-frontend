@@ -142,7 +142,7 @@ class UserConfig extends Component {
     });
   }
   agreeDeleteHandler() {
-    console.log(this.state.deleteConfigIndex);
+    // console.log(this.state.deleteConfigIndex);
     this.deletedHistoryHandler(this.state.deleteConfigIndex);
   }
   disagreeDeleteHandler() {
