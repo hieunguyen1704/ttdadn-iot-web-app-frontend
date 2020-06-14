@@ -12,13 +12,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ControlledOpenSelect() {
+export default function ControlledOpenSelect(props) {
   const classes = useStyles();
-  const [mode, setMode] = React.useState("");
+  const [mode, setMode] = React.useState("10");
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     setMode(event.target.value);
+    props.changed(event.target.value);
   };
 
   const handleClose = () => {
@@ -42,13 +43,14 @@ export default function ControlledOpenSelect() {
           value={mode}
           onChange={handleChange}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={"min"}>Minute</MenuItem>
-          <MenuItem value={"hour"}>Hour</MenuItem>
-          <MenuItem value={"day"}>Day</MenuItem>
-          <MenuItem value={"month"}>Month</MenuItem>
+          <MenuItem value={"10"}>10 Min</MenuItem>
+          <MenuItem value={"30"}>30 Min</MenuItem>
+          <MenuItem value={"60"}>Hour</MenuItem>
+          <MenuItem value={"300"}>5 Hour</MenuItem>
+          <MenuItem value={"720"}>12 Hour</MenuItem>
+          <MenuItem value={"1440"}>Day</MenuItem>
+          <MenuItem value={"10080"}>Week</MenuItem>
+          <MenuItem value={"302400"}>Month</MenuItem>
         </Select>
       </FormControl>
     </div>

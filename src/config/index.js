@@ -17,6 +17,7 @@ export const config = {
   // },
   api: {
     data: "/data/get-current-record",
+    dataWithTime: "/data/time/",
     getConfig: "/user-config/",
     deleteConfig: "/user-config/delete/",
     register: "/user",

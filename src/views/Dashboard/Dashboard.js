@@ -229,14 +229,14 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid style={{ justifyContent: "center" }} container spacing={12}>
+          <Grid container spacing={12} style={{display:"flex", justifyContent: "center" }}>
             {/* Chart */}
             {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <div>hello</div>
               </Paper>
             </Grid> */}
-            <Router >
+            <Router>
               {/* <LoginT path="testlogin" /> */}
               <Register path='register' />
               <LogIn path="login" />
@@ -244,9 +244,9 @@ export default function Dashboard() {
               <DataInfo path="data-info" />
             </Router>
           </Grid>
-          <Box pt={4}>
+          {/* <Box pt={4}>
             <Copyright />
-          </Box>
+          </Box> */}
         </Container>
       </main>
     </div>

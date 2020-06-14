@@ -1,75 +1,132 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./theme/DataInfo.scss";
-import { Chart } from "react-charts";
-import Axios from "axios";
+
+import axios from "axios";
 import { config } from "../../../config";
-import ControlledOpenSelect from "./Select/Select"
-const data = [
-  {
-    label: "Series 1",
-    data: [
-      [new Date("2020-04-01T01:10:00"), 1],
-      [new Date("2020-04-01T01:15:00"), 2],
-      [new Date("2020-04-01T01:20:00"), 4],
-      [new Date("2020-04-01T01:35:00"), 2],
-      [new Date("2020-04-01T01:30:00"), 7],
-    ],
-  },
-  {
-    label: "Series 2",
-    data: [
-      [new Date("2020-04-01T01:10:00"), 3],
-      [new Date("2020-04-01T01:15:00"), 1],
-      [new Date("2020-04-01T01:20:00"), 5],
-      [new Date("2020-04-01T01:25:00"), 6],
-      [new Date("2020-04-01T01:30:00"), 4],
-    ],
-  },
-];
+import ControlledOpenSelect from "./Select/Select";
+import CanvasJSReact from "../../../assets/canvasjs.react";
+import Grid from "@material-ui/core/Grid";
 
-const options = {
-  xAxes: [
-    {
-      type: "time",
-      time: {
-        unit: "month",
-      },
-    },
-  ],
-};
-
-const axes = [
-  { primary: true, type: "time", position: "bottom" },
-  { type: "linear", position: "left" },
-];
-
-const dataUrl = config.dbURl + config.api.data;
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const DataInfo = () => {
-  const getDataInfo = async () => {
-    try {
-      console.log(dataUrl);
-      const response = await Axios.get(dataUrl);
-      console.log(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [tempData, setTempData] = useState([]);
+  const [humidData, setHumidData] = useState([]);
+  const [lightData, setLightData] = useState([]);
+  const [time,setTime] = useState("10"); //min
+
+  const timeChangeHandler = (time) =>{
+    setTime(time);
+  }
   useEffect(() => {
-    getDataInfo();
-  }, []);
+    let mounted = true;
+    let dataUrl = config.dbURl + config.api.dataWithTime + time;
+    axios
+      .get(dataUrl)
+      .then((response) => {
+        if (mounted) {
+          let diff = 1;
+          if (response.data.data.length > 20) {
+            diff = Math.round(response.data.data.length / 20);
+          }
+          var tempArr = [];
+          var humidArr = [];
+          var lightArr = [];
+          for (let i = 0; i < response.data.data.length; i = i + diff) {
+            tempArr.push({
+              x: new Date(response.data.data[i].createdAt),
+              y: parseInt(response.data.data[i].temperature),
+            });
+            humidArr.push({
+              x: new Date(response.data.data[i].createdAt),
+              y: parseInt(response.data.data[i].humid),
+            });
+            lightArr.push({
+              x: new Date(response.data.data[i].createdAt),
+              y: parseInt(response.data.data[i].light),
+            });
+          }
+          setTempData(tempArr);
+          setHumidData(humidArr);
+          setLightData(lightArr);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return () => (mounted = false);
+  }, [time]);
+
+  let option1 = {
+    animationEnabled: true,
+    title: {
+      text: "Temperature & Humidity",
+    },
+    axisX: {
+      valueFormatString: "hh:mmTT",
+    },
+    axisY: {
+      title: "Value",
+      includeZero: false,
+    },
+    data: [
+      {
+        name: "Temp(°C)",
+        showInLegend: true,
+        yValueFormatString: "#°C",
+        xValueFormatString: "YYYY/MM/DD hh:mm:ss TT",
+        type: "line",
+        dataPoints: tempData,
+      },
+      {
+        name: "Humid(%)",
+        showInLegend: true,
+        yValueFormatString: "#'%'",
+        xValueFormatString: "YYYY/MM/DD hh:mm:ss TT",
+        type: "line",
+        dataPoints: humidData,
+      },
+    ],
+  };
+
+  let option2 = {
+    animationEnabled: true,
+    title: {
+      text: "Light",
+    },
+    axisX: {
+      valueFormatString: "hh:mmTT",
+    },
+    axisY: {
+      title: "Value",
+      includeZero: false,
+    },
+    data: [
+      {
+        name: "Light",
+        showInLegend: true,
+        yValueFormatString: "",
+        xValueFormatString: "YYYY/MM/DD hh:mm:ss TT",
+        type: "line",
+        dataPoints: lightData,
+      },
+    ],
+  };
   return (
-    <div className="data-info-component">
-      <ControlledOpenSelect />
-      <div
-        className="data-chart"
-        style={{
-          width: "400px",
-          height: "300px",
-        }}
-      >
-        <Chart data={data} axes={axes} options={options} tooltip />
-      </div>
-    </div>
+    <Grid
+      container
+      spacing={3}
+      style={{ width: "80vw", display: "flex", justifyContent: "center" }}
+    >
+      <Grid item xs={12}>
+       <ControlledOpenSelect changed = {timeChangeHandler}/>
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <CanvasJSChart options={option1} className="chart" />
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <CanvasJSChart options={option2} className="chart" />
+      </Grid>
+    </Grid>
   );
 };
 
