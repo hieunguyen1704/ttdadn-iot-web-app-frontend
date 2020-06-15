@@ -65,12 +65,21 @@ class UserConfig extends Component {
       },
     });
   }
-  deletedHistoryHandler(configIndex) {
+  // @deletedIndex is the id of config in db
+  deletedHistoryHandler(deletedId) {
     const { historyConfig } = this.state;
     let newHistoryConfig = [...historyConfig];
-    const deletedConfig = newHistoryConfig.splice(configIndex, 1);
+    let configIndex = 0;
+    for (let i = 0; i < historyConfig.length; i++) {
+      if (historyConfig[i].id === deletedId) {
+        configIndex = i;
+        break;
+      }
+    }
+    // delete config
+    newHistoryConfig.splice(configIndex, 1);
     const deletedConfigURL =
-      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;
+      config.dbURl + config.api.deleteConfig + deletedId;
     Axios.get(deletedConfigURL)
       .then((response) => {
         if (response.data.data === "deleted successful") {
@@ -85,8 +94,15 @@ class UserConfig extends Component {
         console.error(error);
       });
   }
-  checkedHistoryHandler(configIndex) {
+  checkedHistoryHandler(deletedId) {
     const { threshold, historyConfig } = this.state;
+    let configIndex = 0;
+    for (let i = 0; i < historyConfig.length; i++) {
+      if (historyConfig[i].id === deletedId) {
+        configIndex = i;
+        break;
+      }
+    }
     let newThreshold = { ...threshold };
     newThreshold.humidThreshold = historyConfig[configIndex].humidThreshold;
     newThreshold.lightThreshold = historyConfig[configIndex].lightThreshold;
@@ -135,14 +151,14 @@ class UserConfig extends Component {
       this.ConfigInfo();
     }
   }
-  verifyDeleteHandler(configIndex) {
+  // @deletedIndex is the id of config in db
+  verifyDeleteHandler(deletedId) {
     this.setState({
       displayAlert: true,
-      deleteConfigIndex: configIndex,
+      deleteConfigIndex: deletedId,
     });
   }
   agreeDeleteHandler() {
-    // console.log(this.state.deleteConfigIndex);
     this.deletedHistoryHandler(this.state.deleteConfigIndex);
   }
   disagreeDeleteHandler() {
