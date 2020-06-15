@@ -78,8 +78,7 @@ class UserConfig extends Component {
     }
     // delete config
     newHistoryConfig.splice(configIndex, 1);
-    const deletedConfigURL =
-      config.dbURl + config.api.deleteConfig + deletedId;
+    const deletedConfigURL = config.dbURl + config.api.deleteConfig + deletedId;
     Axios.get(deletedConfigURL)
       .then((response) => {
         if (response.data.data === "deleted successful") {
@@ -209,9 +208,9 @@ class UserConfig extends Component {
     if (this.props.userId) {
       return (
         <Container maxWidth="lg" style={{ width: "80vw" }}>
-          <MotorState isOn={this.state.isTurn} />
           {this.props.isAuto && this.props.isAdmin ? (
             <div>
+              <MotorState isOn={this.state.isTurn} />
               <CurrentSetting currentConfig={this.state.currentConfig} />
               <form onSubmit={this.submitHandler.bind(this)}>
                 <Grid container spacing={3} className="flex-center">
@@ -239,18 +238,29 @@ class UserConfig extends Component {
                 checked={this.checkedHistoryHandler.bind(this)}
               />
             </div>
-          ) : (
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              direction="column"
-            >
-              <Grid item>
-                <h2>Manual Setting:</h2>
+          ) : this.props.isAdmin ? (
+            <div>
+              <MotorState isOn={this.state.isTurn} />
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                direction="column"
+              >
+                <Grid item>
+                  <h2>Manual Setting:</h2>
+                </Grid>
+                <Grid item>
+                  <Switch turnOn={this.getTurnOnState.bind(this)} />
+                </Grid>
               </Grid>
-              <Grid item>
-                <Switch turnOn={this.getTurnOnState.bind(this)} />
+            </div>
+          ) : (
+            <Grid container spacing={3} className="flex-center">
+              <Grid item md={10} xs={12}>
+                <h1 style={{ textAlign: "center" }}>
+                  Please use the administrator rights to login before setting
+                </h1>
               </Grid>
             </Grid>
           )}
