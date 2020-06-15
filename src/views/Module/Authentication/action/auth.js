@@ -84,3 +84,15 @@ export const login = (formData) => async dispatch => {
 export const logout = () => dispatch => {
     dispatch({ type: LOGOUT })
 }
+
+const switchUrl = config.dbURl + config.api.switch;
+export const switchbutton = () => async dispatch => {
+    try {
+        // console.log("before call api");
+        await callApi(switchUrl, 'POST');
+        // console.log(res);
+        dispatch(loadUser());
+    } catch (err) {
+        console.log(err)
+    }
+}

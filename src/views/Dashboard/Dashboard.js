@@ -31,20 +31,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PeopleIcon from "@material-ui/icons/People";
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
-
+import SwitchComponent from '../Module/Authentication/components/switchComponent';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -202,6 +189,7 @@ export default function Dashboard() {
               <ListItemText primary={username} />
             </ListItem>}
           </IconButton>
+          {isAuthenticated && <SwitchComponent />}
           {/* display logout icon  */}
           <IconButton color="inherit" onClick={(e) => onLogout(e)}>
             {/* <Badge badgeContent={4} color="secondary">
@@ -244,9 +232,6 @@ export default function Dashboard() {
               <DataInfo path="data-info" />
             </Router>
           </Grid>
-          {/* <Box pt={4}>
-            <Copyright />
-          </Box> */}
         </Container>
       </main>
     </div>
