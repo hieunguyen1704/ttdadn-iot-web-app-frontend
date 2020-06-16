@@ -23,7 +23,6 @@ class UserConfig extends Component {
         humidThreshold: 60,
         lightThreshold: 600,
       },
-      // name: "default",
       historyConfig: [],
       currentConfig: {},
       displayAlert: false,
@@ -54,6 +53,17 @@ class UserConfig extends Component {
 
     this.setState({
       sendData,
+    });
+  }
+  submitSuccessHandler(){
+    console.log("submit succeeded");
+    this.setState({
+      historyConfig: [],
+      displayAlert: false,
+      deleteConfigIndex: undefined,
+      isTurn: null,
+      displayFormDialog: false,
+      sendData: {},
     });
   }
   resetHandler() {
@@ -93,21 +103,45 @@ class UserConfig extends Component {
         console.error(error);
       });
   }
-  checkedHistoryHandler(deletedId) {
-    const { threshold, historyConfig } = this.state;
+  checkedHistoryHandler(checkedId, name) {
+    const { historyConfig } = this.state;
     let configIndex = 0;
     for (let i = 0; i < historyConfig.length; i++) {
-      if (historyConfig[i].id === deletedId) {
+      if (historyConfig[i].id === checkedId) {
         configIndex = i;
         break;
       }
     }
-    let newThreshold = { ...threshold };
-    newThreshold.humidThreshold = historyConfig[configIndex].humidThreshold;
-    newThreshold.lightThreshold = historyConfig[configIndex].lightThreshold;
-    newThreshold.tempeThreshold = historyConfig[configIndex].tempeThreshold;
-    this.setState({
-      threshold: newThreshold,
+    const humidThreshold = historyConfig[configIndex].humidThreshold;
+    const tempeThreshold = historyConfig[configIndex].tempeThreshold;
+    const lightThreshold = historyConfig[configIndex].lightThreshold;
+
+    let sendedConfig = {humidThreshold, tempeThreshold, lightThreshold, name}
+    const createConfigURL = config.dbURl + config.api.getConfig;
+    const deletedConfigURL = config.dbURl + config.api.deleteConfig + checkedId;
+    // Create new config with checked config
+    Axios.post(createConfigURL, sendedConfig)
+    .then((response) => {
+      if (response.data.data === "successful") {
+        // delete the old checked config
+        Axios.get(deletedConfigURL)
+        .then((response) => {
+          if (response.data.data === "deleted successful") {
+            this.setState({
+              currentConfig: {humidThreshold, tempeThreshold, lightThreshold},
+              historyConfig: [],
+            });
+            // window.location.reload();
+            // this.ConfigInfo();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
   }
   async ConfigInfo() {
@@ -230,7 +264,7 @@ class UserConfig extends Component {
                 />
               ) : null}
               {/* display set name form  */}
-              {displayFormDialog && <FormDialog sendData={sendData} />}
+              {displayFormDialog && <FormDialog sendData={sendData} succeeded = {this.submitSuccessHandler.bind(this)} />}
               <HistoryConfig
                 history={historyConfig}
                 verifyDelete={this.verifyDeleteHandler.bind(this)}

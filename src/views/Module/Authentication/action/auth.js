@@ -8,7 +8,6 @@ import {
     LOGOUT,
     LOGIN,
     REGISTER,
-    CLEAR_PROFILE
 } from '../actionsType/actiontype'
 import { config } from "../../../../config";
 

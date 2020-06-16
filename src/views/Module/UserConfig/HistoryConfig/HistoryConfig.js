@@ -123,9 +123,9 @@ export default function HistoryConfig(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const emptyRows =
-    rowsPerPage -
-    Math.min(rowsPerPage, props.history.length - page * rowsPerPage);
+  // const emptyRows =
+  //   rowsPerPage -
+  //   Math.min(rowsPerPage, props.history.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -150,14 +150,11 @@ export default function HistoryConfig(props) {
                   <Hidden mdDown>
                     <StyledTableCell>ID</StyledTableCell>
                   </Hidden>
-                  <StyledTableCell align="center">
-                    Temperature&nbsp;(°C)
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    Humidity&nbsp;(%)
-                  </StyledTableCell>
-                  <StyledTableCell align="center">Light</StyledTableCell>
                   <StyledTableCell align="center">Name</StyledTableCell>
+                  <StyledTableCell align="center">Temp(°C)</StyledTableCell>
+                  <StyledTableCell align="center">Humid(%)</StyledTableCell>
+                  <StyledTableCell align="center">Light</StyledTableCell>
+
                   <Hidden mdDown>
                     <StyledTableCell align="center">Time</StyledTableCell>
                   </Hidden>
@@ -165,14 +162,20 @@ export default function HistoryConfig(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(rowsPerPage > 0 ? props.history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : props.history).map((el, index) => (
+                {(rowsPerPage > 0
+                  ? props.history.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : props.history
+                ).map((el, index) => (
                   <StyledTableRow key={el.id}>
                     <Hidden mdDown>
                       <StyledTableCell component="th" scope="row">
                         {index + 1}
                       </StyledTableCell>
                     </Hidden>
-
+                    <StyledTableCell align="center">{el.name}</StyledTableCell>
                     <StyledTableCell align="center">
                       {el.tempeThreshold}
                     </StyledTableCell>
@@ -182,7 +185,7 @@ export default function HistoryConfig(props) {
                     <StyledTableCell align="center">
                       {el.lightThreshold}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{el.name}</StyledTableCell>
+                    
                     <Hidden mdDown>
                       <StyledTableCell align="center">
                         {/* change to local time */}
@@ -202,7 +205,7 @@ export default function HistoryConfig(props) {
                       <IconButton
                         aria-label="check"
                         style={{ color: "#27ae60" }}
-                        onClick={() => props.checked(el.id)}
+                        onClick={() => props.checked(el.id, el.name)}
                       >
                         <CheckIcon />
                       </IconButton>
@@ -210,11 +213,11 @@ export default function HistoryConfig(props) {
                   </StyledTableRow>
                 ))}
 
-                {emptyRows > 0 && (
+                {/* {emptyRows > 0 && (
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
-                )}
+                )} */}
               </TableBody>
               <TableFooter>
                 <TableRow>
