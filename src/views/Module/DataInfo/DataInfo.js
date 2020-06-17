@@ -13,7 +13,7 @@ const DataInfo = (props) => {
   const [tempData, setTempData] = useState([]);
   const [humidData, setHumidData] = useState([]);
   const [lightData, setLightData] = useState([]);
-  const [time, setTime] = useState("10"); //min
+  const [time, setTime] = useState("5"); //min
   const [loading, setLoading] = useState(true);
 
   const timeChangeHandler = (time) => {
@@ -27,9 +27,6 @@ const DataInfo = (props) => {
       .then((response) => {
         if (mounted) {
           let diff = 1;
-          if (response.data.data.length > 20) {
-            diff = Math.round(response.data.data.length / 20);
-          }
           const lengthRes = response.data.data.length;
           var tempArr = [];
           var humidArr = [];
@@ -48,21 +45,6 @@ const DataInfo = (props) => {
               y: parseInt(response.data.data[i].light),
             });
           }
-          //get last data
-          if (i > lengthRes) {
-            tempArr.push({
-              x: new Date(response.data.data[lengthRes - 1].createdAt),
-              y: parseInt(response.data.data[lengthRes - 1].temperature),
-            });
-            humidArr.push({
-              x: new Date(response.data.data[lengthRes - 1].createdAt),
-              y: parseInt(response.data.data[lengthRes - 1].humid),
-            });
-            lightArr.push({
-              x: new Date(response.data.data[lengthRes - 1].createdAt),
-              y: parseInt(response.data.data[lengthRes - 1].light),
-            });
-          }
           setTempData(tempArr);
           setHumidData(humidArr);
           setLightData(lightArr);
@@ -73,7 +55,65 @@ const DataInfo = (props) => {
         console.log(error);
         setLoading(false);
       });
-    return () => (mounted = false);
+
+     setInterval(() => {
+      console.log("get data");
+      axios
+        .get(dataUrl)
+        .then((response) => {
+          if (mounted) {
+            let diff = 1;
+            // if (response.data.data.length > 20) {
+            //   diff = Math.round(response.data.data.length / 20);
+            // }
+            const lengthRes = response.data.data.length;
+            var tempArr = [];
+            var humidArr = [];
+            var lightArr = [];
+            for (var i = 0; i < lengthRes; i = i + diff) {
+              tempArr.push({
+                x: new Date(response.data.data[i].createdAt),
+                y: parseInt(response.data.data[i].temperature),
+              });
+              humidArr.push({
+                x: new Date(response.data.data[i].createdAt),
+                y: parseInt(response.data.data[i].humid),
+              });
+              lightArr.push({
+                x: new Date(response.data.data[i].createdAt),
+                y: parseInt(response.data.data[i].light),
+              });
+            }
+            //get last data
+            // if (i > lengthRes) {
+            //   tempArr.push({
+            //     x: new Date(response.data.data[lengthRes - 1].createdAt),
+            //     y: parseInt(response.data.data[lengthRes - 1].temperature),
+            //   });
+            //   humidArr.push({
+            //     x: new Date(response.data.data[lengthRes - 1].createdAt),
+            //     y: parseInt(response.data.data[lengthRes - 1].humid),
+            //   });
+            //   lightArr.push({
+            //     x: new Date(response.data.data[lengthRes - 1].createdAt),
+            //     y: parseInt(response.data.data[lengthRes - 1].light),
+            //   });
+            // }
+            setTempData(tempArr);
+            setHumidData(humidArr);
+            setLightData(lightArr);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+        });
+    }, 15000);
+    return () => {
+      mounted = false;
+      // clearInterval(timeInterval)
+    }
   }, [time]);
 
   let option1 = {
@@ -82,7 +122,7 @@ const DataInfo = (props) => {
       text: "Temperature & Humidity",
     },
     axisX: {
-      valueFormatString: "hh:mmTT",
+      valueFormatString: Number(time) > 1440 ? "DD/MM" : "hh:mmTT",
     },
     axisY: {
       title: "Value",
@@ -114,7 +154,7 @@ const DataInfo = (props) => {
       text: "Light",
     },
     axisX: {
-      valueFormatString: "hh:mmTT",
+      valueFormatString: Number(time) > 1440 ? "DD/MM" : "hh:mmTT",
     },
     axisY: {
       title: "Value",

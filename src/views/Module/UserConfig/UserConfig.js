@@ -184,8 +184,9 @@ class UserConfig extends Component {
       let motorUrl = config.dbURl + config.api.motorState;
       Axios.get(motorUrl)
         .then((response) => {
+          console.log("Get Motor State:  " + response.data.data);
           if (response.data.data !== this.state.isTurn) {
-            console.log("Get Motor State:  " + response.data.data);
+            // console.log("Get Motor State:  " + response.data.data);
             this.setState({
               isTurn: response.data.data,
             });
@@ -199,7 +200,10 @@ class UserConfig extends Component {
   componentDidMount() {
     if (this.props.userId) {
       this.ConfigInfo();
-      this.getAutoMotorState();
+      // this.getAutoMotorState();
+      // setInterval(()=>{
+      //   this.getAutoMotorState();
+      // },5000);
     }
   }
   componentDidUpdate(prevProps,prevState) {
@@ -215,6 +219,9 @@ class UserConfig extends Component {
       ) {
         this.getAutoMotorState();
         // console.log(prevState);
+        setInterval(()=>{
+          this.getAutoMotorState();
+        },5000);
       }
     }
   }

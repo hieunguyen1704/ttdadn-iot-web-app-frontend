@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ControlledOpenSelect(props) {
   const classes = useStyles();
-  const [mode, setMode] = React.useState("10");
+  const [mode, setMode] = React.useState("5");
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
@@ -43,6 +43,7 @@ export default function ControlledOpenSelect(props) {
           value={mode}
           onChange={handleChange}
         >
+          <MenuItem value={"5"}>5 Min</MenuItem>
           <MenuItem value={"10"}>10 Min</MenuItem>
           <MenuItem value={"30"}>30 Min</MenuItem>
           <MenuItem value={"60"}>Hour</MenuItem>
