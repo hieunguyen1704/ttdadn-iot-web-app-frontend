@@ -116,33 +116,37 @@ class UserConfig extends Component {
     const tempeThreshold = historyConfig[configIndex].tempeThreshold;
     const lightThreshold = historyConfig[configIndex].lightThreshold;
 
-    let sendedConfig = {humidThreshold, tempeThreshold, lightThreshold, name}
+    let sendedConfig = { humidThreshold, tempeThreshold, lightThreshold, name };
     const createConfigURL = config.dbURl + config.api.getConfig;
     const deletedConfigURL = config.dbURl + config.api.deleteConfig + checkedId;
     // Create new config with checked config
     Axios.post(createConfigURL, sendedConfig)
-    .then((response) => {
-      if (response.data.data === "successful") {
-        // delete the old checked config
-        Axios.get(deletedConfigURL)
-        .then((response) => {
-          if (response.data.data === "deleted successful") {
-            this.setState({
-              currentConfig: {humidThreshold, tempeThreshold, lightThreshold},
-              historyConfig: [],
+      .then((response) => {
+        if (response.data.data === "successful") {
+          // delete the old checked config
+          Axios.get(deletedConfigURL)
+            .then((response) => {
+              if (response.data.data === "deleted successful") {
+                this.setState({
+                  currentConfig: {
+                    humidThreshold,
+                    tempeThreshold,
+                    lightThreshold,
+                  },
+                  historyConfig: [],
+                });
+                // window.location.reload();
+                // this.ConfigInfo();
+              }
+            })
+            .catch((error) => {
+              console.error(error);
             });
-            // window.location.reload();
-            // this.ConfigInfo();
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   async ConfigInfo() {
     const configOfUserURL = config.dbURl + config.api.getConfig;
@@ -174,14 +178,44 @@ class UserConfig extends Component {
       console.error(error);
     }
   }
+  // get motor state when turn on auto mode
+  getAutoMotorState() {
+    if (this.props.isAuto) {
+      let motorUrl = config.dbURl + config.api.motorState;
+      Axios.get(motorUrl)
+        .then((response) => {
+          if (response.data.data !== this.state.isTurn) {
+            console.log("Get Motor State:  " + response.data.data);
+            this.setState({
+              isTurn: response.data.data,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
   componentDidMount() {
     if (this.props.userId) {
       this.ConfigInfo();
+      this.getAutoMotorState();
     }
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps,prevState) {
     if (this.props.userId) {
       this.ConfigInfo();
+      if (
+        prevState.currentConfig.humidThreshold !==
+          this.state.currentConfig.humidThreshold ||
+        prevState.currentConfig.tempeThreshold !==
+          this.state.currentConfig.tempeThreshold ||
+        prevState.currentConfig.lightThreshold !==
+          this.state.currentConfig.lightThreshold
+      ) {
+        this.getAutoMotorState();
+        // console.log(prevState);
+      }
     }
   }
   // @deletedIndex is the id of config in db
@@ -264,7 +298,12 @@ class UserConfig extends Component {
                 />
               ) : null}
               {/* display set name form  */}
-              {displayFormDialog && <FormDialog sendData={sendData} succeeded = {this.submitSuccessHandler.bind(this)} />}
+              {displayFormDialog && (
+                <FormDialog
+                  sendData={sendData}
+                  succeeded={this.submitSuccessHandler.bind(this)}
+                />
+              )}
               <HistoryConfig
                 history={historyConfig}
                 verifyDelete={this.verifyDeleteHandler.bind(this)}
@@ -285,7 +324,7 @@ class UserConfig extends Component {
                   <h2>Manual Setting:</h2>
                 </Grid>
                 <Grid item>
-                  <Switch turnOn={this.getTurnOnState.bind(this)} />
+                  <Switch turnOn={this.getTurnOnState.bind(this)} isTurn ={this.state.isTurn} />
                 </Grid>
               </Grid>
             </div>

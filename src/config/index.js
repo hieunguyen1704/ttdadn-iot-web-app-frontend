@@ -22,6 +22,8 @@ export const config = {
     deleteConfig: "/user-config/delete/",
     register: "/user",
     authoterize: "/auth",
-    switch: "/auth/configAuto"
+    switch: "/auth/configAuto",
+    motorState: "/motor",
+    publish: "/publish/"
   },
 };
