@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ttdadn-726a2"
+  },
+  "targets": {
+    "ttdadn-726a2": {
+      "hosting": {
+        "ttdadn": [
+          "ttdadn-cse"
+        ]
+      }
+    }
+  }
+}

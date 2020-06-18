@@ -5,6 +5,6 @@ dist/
 coverage/
 .vscode/
 .env
-.env.prodcut
+.env.production
 .firebase/
 junit.xml
