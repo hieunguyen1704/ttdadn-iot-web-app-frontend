@@ -109,7 +109,7 @@ const DataInfo = (props) => {
           console.log(error);
           setLoading(false);
         });
-    }, 15000);
+    }, 10000);
     return () => {
       mounted = false;
       // clearInterval(timeInterval)
