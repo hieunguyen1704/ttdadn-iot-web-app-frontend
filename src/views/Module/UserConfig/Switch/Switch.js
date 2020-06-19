@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Axios from "axios";
 import { config } from "../../../../config";
+import ErrorAlert from "../../../Alert/ErrorAlert";
 import "./Switch.scss";
 const IOSSwitch = withStyles((theme) => ({
   root: {
@@ -69,6 +70,7 @@ function usePrevious(value) {
 export default function CustomizedSwitches(props) {
   const [state, setState] = React.useState("");
   const [isDone, setIsDone] = React.useState(true);
+  const [hasError, setHasError] = React.useState(false);
   const prevState = usePrevious(state);
 
   const handleChange = (event) => {
@@ -94,22 +96,27 @@ export default function CustomizedSwitches(props) {
       console.log(publishUrl);
       Axios.get(publishUrl)
         .then((response) => {
-          console.log(response.data.data);
+          console.log("Previous State: " ,prevState);
+          console.log("Current State: " ,response.data.data);
           if (props.isTurn !== response.data.data) {
             props.turnOn(response.data.data);
           }
-          console.log("Previous State: " ,prevState);
           // if first time publish do not need to set time out
           if(prevState === "" || prevState === state){
             setIsDone(true);
           }else{
             setTimeout(() => {
               setIsDone(true);
-            }, 5500);
+            }, 3200);
           }
         })
         .catch((error) => {
           console.log(error);
+          setIsDone(true);
+          setHasError(true);
+          setTimeout(()=>{
+            setHasError(false);
+          },5000)
         });
     }
   }, [state]);
@@ -131,6 +138,7 @@ export default function CustomizedSwitches(props) {
           <Grid item>On</Grid>
         </Grid>
       </Typography>
+      {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>}
     </FormGroup>
   );
 }
