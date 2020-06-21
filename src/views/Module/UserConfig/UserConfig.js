@@ -31,6 +31,7 @@ class UserConfig extends Component {
       displayFormDialog: false,
       sendData: {},
     };
+    this.timeInterval = 0;
   }
   changeHandler(type, event, newValue) {
     const newThreshold = {
@@ -219,11 +220,15 @@ class UserConfig extends Component {
       ) {
         this.getAutoMotorState();
         // console.log(prevState);
-        setInterval(()=>{
+        this.timeInterval = setInterval(()=>{
           this.getAutoMotorState();
         },5000);
       }
     }
+  }
+  componentWillUnmount(){
+    console.log("UserConfig WillUnmount");
+    clearInterval(this.timeInterval);
   }
   // @deletedIndex is the id of config in db
   verifyDeleteHandler(deletedId) {

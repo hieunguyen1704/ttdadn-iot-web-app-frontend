@@ -56,7 +56,7 @@ const DataInfo = (props) => {
         setLoading(false);
       });
 
-     setInterval(() => {
+      const timeInterval = setInterval(() => {
       console.log("get data");
       axios
         .get(dataUrl)
@@ -109,10 +109,11 @@ const DataInfo = (props) => {
           console.log(error);
           setLoading(false);
         });
-    }, 15000);
+    }, 10000);
     return () => {
       mounted = false;
-      // clearInterval(timeInterval)
+      console.log("DataInfo WillUnmount");
+      clearInterval(timeInterval)
     }
   }, [time]);
 
