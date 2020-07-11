@@ -107,14 +107,14 @@ export default function CustomizedSwitches(props) {
           }else{
             setTimeout(() => {
               setIsDone(true);
-            }, 3200);
+            }, 10000);
           }
         })
         .catch((error) => {
           console.log(error);
           setIsDone(true);
           setHasError(true);
-          setTimeout(()=>{
+          setTimeout(()=>{ // delete error after 5s
             setHasError(false);
           },5000)
         });
@@ -122,6 +122,7 @@ export default function CustomizedSwitches(props) {
   }, [state]);
 
   return (
+    <div>
     <FormGroup>
       <Typography component="div">
         <Grid component="label" container alignItems="center" spacing={1}>
@@ -138,7 +139,9 @@ export default function CustomizedSwitches(props) {
           <Grid item>On</Grid>
         </Grid>
       </Typography>
-      {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>}
+      {/* {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>} */}
     </FormGroup>
+    {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>}
+    </div>
   );
 }

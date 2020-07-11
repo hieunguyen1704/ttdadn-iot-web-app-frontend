@@ -12,7 +12,7 @@ import CurrentSetting from "./CurrentSetting/CurrentSetting";
 import Loading from "./Loading/Loading";
 import DeleteAlert from "./DeleteAlert/DeleteAlert";
 import Switch from "./Switch/Switch";
-import MotorState from "./MotorState/MotorState";
+// import MotorState from "./MotorState/MotorState";
 import FormDialog from "./Dialog/SetName";
 class UserConfig extends Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class UserConfig extends Component {
       isTurn: null,
       displayFormDialog: false,
       sendData: {},
+      isDisplaySetting: false,
     };
     this.timeInterval = 0;
   }
@@ -56,7 +57,7 @@ class UserConfig extends Component {
       sendData,
     });
   }
-  submitSuccessHandler(){
+  submitSuccessHandler() {
     console.log("submit succeeded");
     this.setState({
       historyConfig: [],
@@ -207,7 +208,7 @@ class UserConfig extends Component {
       // },5000);
     }
   }
-  componentDidUpdate(prevProps,prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.userId) {
       this.ConfigInfo();
       if (
@@ -220,13 +221,13 @@ class UserConfig extends Component {
       ) {
         this.getAutoMotorState();
         // console.log(prevState);
-        this.timeInterval = setInterval(()=>{
+        this.timeInterval = setInterval(() => {
           this.getAutoMotorState();
-        },5000);
+        }, 5000);
       }
     }
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log("UserConfig WillUnmount");
     clearInterval(this.timeInterval);
   }
@@ -249,6 +250,11 @@ class UserConfig extends Component {
   getTurnOnState(check) {
     this.setState({
       isTurn: check,
+    });
+  }
+  changeDisplaySetting() {
+    this.setState({
+      isDisplaySetting: !this.state.isDisplaySetting,
     });
   }
 
@@ -290,17 +296,27 @@ class UserConfig extends Component {
         <Container maxWidth="lg" style={{ width: "80vw" }}>
           {this.props.isAuto && this.props.isAdmin ? (
             <div>
-              <MotorState isOn={this.state.isTurn} />
-              <CurrentSetting currentConfig={this.state.currentConfig} />
+              {/* <MotorState isOn={this.state.isTurn} /> */}
+              <CurrentSetting
+                currentConfig={this.state.currentConfig}
+                isOn={this.state.isTurn}
+                changeDisplaySetting={this.changeDisplaySetting.bind(this)}
+              />
               <form onSubmit={this.submitHandler.bind(this)}>
                 <Grid container spacing={3} className="flex-center">
-                  <Grid item md={10} xs={12}>
-                    <h1>Setting</h1>
-                  </Grid>
-                  {sliderContainerList}
-                  <Grid item md={6} xs={12}>
-                    <ButtonArea reset={this.resetHandler.bind(this)} />
-                  </Grid>
+                  {this.state.isDisplaySetting && (
+                    <Grid item md={10} xs={12}>
+                      <h4 style={{ marginTop: 15 }}>New Config</h4>
+                    </Grid>
+                  )}
+
+                  {this.state.isDisplaySetting && sliderContainerList}
+                  {/* {sliderContainerList} */}
+                  {this.state.isDisplaySetting && (
+                    <Grid item md={6} xs={12}>
+                      <ButtonArea reset={this.resetHandler.bind(this)} />
+                    </Grid>
+                  )}
                 </Grid>
               </form>
               {displayAlert ? (
@@ -325,7 +341,7 @@ class UserConfig extends Component {
             </div>
           ) : this.props.isAdmin ? (
             <div>
-              <MotorState isOn={this.state.isTurn} />
+              {/* <MotorState isOn={this.state.isTurn} /> */}
               <Grid
                 container
                 justify="center"
@@ -333,10 +349,13 @@ class UserConfig extends Component {
                 direction="column"
               >
                 <Grid item>
-                  <h2>Manual Setting:</h2>
+                  <h3>Manual Setting:</h3>
                 </Grid>
                 <Grid item>
-                  <Switch turnOn={this.getTurnOnState.bind(this)} isTurn ={this.state.isTurn} />
+                  <Switch
+                    turnOn={this.getTurnOnState.bind(this)}
+                    isTurn={this.state.isTurn}
+                  />
                 </Grid>
               </Grid>
             </div>
