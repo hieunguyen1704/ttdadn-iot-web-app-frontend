@@ -24,7 +24,8 @@ export default (state = initialState, action) => {
                 ...state,
                 register: undefined,
                 login: undefined,
-                isSuccess: false
+                isSuccess: false,
+                
             }
         case SET_ALERT:
             return {

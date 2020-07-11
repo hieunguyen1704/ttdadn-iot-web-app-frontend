@@ -362,9 +362,9 @@ class UserConfig extends Component {
           ) : (
             <Grid container spacing={3} className="flex-center">
               <Grid item md={10} xs={12}>
-                <h1 style={{ textAlign: "center" }}>
+                <h3 style={{ textAlign: "center" }}>
                   Please use the administrator rights to login before setting
-                </h1>
+                </h3>
               </Grid>
             </Grid>
           )}
@@ -376,9 +376,9 @@ class UserConfig extends Component {
           <Grid container spacing={3} className="flex-center">
             <Grid item md={10} xs={12}>
               {this.props.isAuthenticated === false ? (
-                <h1 style={{ textAlign: "center" }}>
+                <h3 style={{ textAlign: "center" }}>
                   Please log in before setting config
-                </h1>
+                </h3>
               ) : (
                 <Loading />
               )}
