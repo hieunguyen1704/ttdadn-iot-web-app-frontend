@@ -7,8 +7,11 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { navigate } from "@reach/router";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
-export const mainListItems = (
-  <div>
+import {useSelector } from 'react-redux';
+export default function MainListItems(){
+const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  return (
+    <div>
     <ListItem button onClick={() => navigate("user-config")}>
       <ListItemIcon>
         <SettingsIcon />
@@ -21,12 +24,13 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="View Data" />
     </ListItem>
+    {!isAuthenticated  &&
     <ListItem button onClick={() => navigate("login")}>
       <ListItemIcon>
         <LockOpenIcon />
       </ListItemIcon>
       <ListItemText primary="Login" />
-    </ListItem>
-
+    </ListItem>}
   </div>
-);
+  );
+};

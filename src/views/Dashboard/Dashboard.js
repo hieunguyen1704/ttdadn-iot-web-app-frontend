@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { Router } from "@reach/router";
-import { mainListItems } from "./listItems";
+import MainListItems from "./listItems";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
@@ -212,7 +212,9 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+          <MainListItems />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
