@@ -31,7 +31,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-import PeopleIcon from "@material-ui/icons/People";
+// import PeopleIcon from "@material-ui/icons/People";
 import SwitchComponent from '../Module/Authentication/components/switchComponent';
 const drawerWidth = 240;
 
@@ -183,10 +183,9 @@ export default function Dashboard() {
           </IconButton>
           {/* display username */}
           <IconButton color="inherit" onClick={()=>navigate("user-info")}>
-            {isAuthenticated && <ListItem button>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
+            {isAuthenticated && 
+            <ListItem button>
+              <img src="https://image.thanhnien.vn/768/uploaded/tuyenth/2020_01_08/iu_gkal.jpg" alt="A" style={{borderRadius:"50%",width:35,height: 35, marginRight:10}} />
               <ListItemText primary={username} />
             </ListItem>}
           </IconButton>
