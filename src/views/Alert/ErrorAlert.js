@@ -24,14 +24,10 @@ export default function ErrorAlert(props) {
   };
 
   return (
-    <div className="row justify-content-center" style={{ width: "80vw" }}>
-      <div className="col-lg-6 col-md-8 col-xs-10 col-12">
         <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error" variant="filled">
             {props.message}
           </Alert>
         </Snackbar>
-      </div>
-    </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import FormGroup from "@material-ui/core/FormGroup";
 import Switch from "@material-ui/core/Switch";
@@ -68,9 +68,10 @@ function usePrevious(value) {
   return ref.current;
 }
 export default function CustomizedSwitches(props) {
-  const [state, setState] = React.useState("");
+  const [state, setState] = React.useState(false);
   const [isDone, setIsDone] = React.useState(true);
   const [hasError, setHasError] = React.useState(false);
+  const [firstTime, setFirstTime] = React.useState(true);
   const prevState = usePrevious(state);
 
   const handleChange = (event) => {
@@ -82,29 +83,31 @@ export default function CustomizedSwitches(props) {
       .then((response) => {
         setState(response.data.data);
         // console.log(prevState);
+        setFirstTime(false);
       })
       .catch((error) => {
         console.log(error);
       });
-
   }, []);
   useEffect(() => {
-    if (state !== "") {
+    // Đợi để lấy được trạng thái của sào phơi đồ lần đầu thì sau đó mới cho phép publish
+    if(!firstTime){
+      setFirstTime(false);
       let publishValue = state ? 1 : 0;
       let publishUrl = config.dbURl + config.api.publish + publishValue;
       setIsDone(false);
       console.log(publishUrl);
       Axios.get(publishUrl)
         .then((response) => {
-          console.log("Previous State: " ,prevState);
-          console.log("Current State: " ,response.data.data);
+          console.log("Previous State: ", prevState);
+          console.log("Current State: ", response.data.data);
           if (props.isTurn !== response.data.data) {
             props.turnOn(response.data.data);
           }
           // if first time publish do not need to set time out
-          if(prevState === "" || prevState === state){
+          if (prevState === "" || prevState === state) {
             setIsDone(true);
-          }else{
+          } else {
             setTimeout(() => {
               setIsDone(true);
             }, 10000);
@@ -114,34 +117,40 @@ export default function CustomizedSwitches(props) {
           console.log(error);
           setIsDone(true);
           setHasError(true);
-          setTimeout(()=>{ // delete error after 5s
+          setTimeout(() => {
+            // delete error after 5s
             setHasError(false);
-          },5000)
+          }, 5000);
         });
     }
+
   }, [state]);
 
   return (
-    <div>
-    <FormGroup>
-      <Typography component="div">
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Off</Grid>
-          <Grid item>
-            <IOSSwitch
-              checked={state}
-              onChange={handleChange}
-              name="state"
-              disabled={!isDone}
-              className={isDone ? "" : "disabled"}
-            />
-          </Grid>
-          <Grid item>On</Grid>
-        </Grid>
-      </Typography>
-      {/* {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>} */}
-    </FormGroup>
-    {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>}
-    </div>
+    <Fragment>
+      {hasError && (
+        <ErrorAlert message={"Some thing wrongs with MQTT server"} />
+      )}
+      <div>
+        <FormGroup>
+          <Typography component="div">
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Off</Grid>
+              <Grid item>
+                <IOSSwitch
+                  checked={state}
+                  onChange={handleChange}
+                  name="state"
+                  disabled={!isDone}
+                  className={isDone ? "" : "disabled"}
+                />
+              </Grid>
+              <Grid item>On</Grid>
+            </Grid>
+          </Typography>
+          {/* {hasError && <ErrorAlert message={"Some thing wrongs with MQTT server"}/>} */}
+        </FormGroup>
+      </div>
+    </Fragment>
   );
 }
