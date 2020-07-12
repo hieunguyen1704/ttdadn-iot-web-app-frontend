@@ -24,6 +24,7 @@ export const config = {
     authoterize: "/auth",
     switch: "/auth/configAuto",
     motorState: "/motor",
-    publish: "/publish/"
+    publish: "/publish/",
+    userInfo: "/user-info"
   },
 };

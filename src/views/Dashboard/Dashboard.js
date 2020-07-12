@@ -20,6 +20,7 @@ import MainListItems from "./listItems";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
+import UserInfo from "../Module/UserInfo/UserInfo";
 import LogIn from '../Module/Authentication/LogIn'
 
 import Register from "../Module/Authentication/Register1";
@@ -181,7 +182,7 @@ export default function Dashboard() {
             </ListItem>}
           </IconButton>
           {/* display username */}
-          <IconButton color="inherit" >
+          <IconButton color="inherit" onClick={()=>navigate("user-info")}>
             {isAuthenticated && <ListItem button>
               <ListItemIcon>
                 <PeopleIcon />
@@ -232,6 +233,7 @@ export default function Dashboard() {
               <LogIn path="login" />
               <UserConfig path="user-config" />
               <DataInfo path="data-info" />
+              <UserInfo path="user-info" />
             </Router>
           </Grid>
         </Container>
