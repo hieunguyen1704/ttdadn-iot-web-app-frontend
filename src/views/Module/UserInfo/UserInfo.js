@@ -5,6 +5,7 @@ import ErrorAlert from "../../Alert/ErrorAlert";
 import { storage } from "../../../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "./UserInfo.scss";
+import { useSelector } from "react-redux";
 const UserInfo = () => {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ const UserInfo = () => {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [invalidImage, setInvalidImage] = useState(null);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   useEffect(() => {
     const userInfoUrl = config.dbURl + config.api.userInfo;
     let mounted = true;
@@ -122,6 +124,9 @@ const UserInfo = () => {
         }, 5000);
       });
   };
+  if (!isAuthenticated) {
+    return <h3>Please log in to see profile</h3>;
+  }
   return (
     <Fragment>
       {hasError && <ErrorAlert message={message} />}

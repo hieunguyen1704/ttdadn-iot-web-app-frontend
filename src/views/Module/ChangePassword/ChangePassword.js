@@ -4,11 +4,15 @@ import { config } from "../../../config";
 import { logout } from "../Authentication/action/auth";
 import { navigate } from "@reach/router";
 import { useDispatch } from "react-redux";
+import ErrorAlert from "../../Alert/ErrorAlert";
+import { useSelector } from "react-redux";
 const ChangePassword = () => {
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [error, setError] = useState(null);
+  const [requestError, setRequestError] = useState("");
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   const handleCurrentPassChange = (event) => {
     setCurrentPass(event.target.value);
@@ -46,10 +50,18 @@ const ChangePassword = () => {
       })
       .catch((error) => {
         console.log(error);
+        setRequestError(true);
+        setTimeout(() => {
+          setRequestError(false);
+        }, 5000);
       });
   };
+  if (!isAuthenticated) {
+    return <h3>Please Log in to change password</h3>;
+  }
   return (
     <div style={{ width: "80vw" }} className="row justify-content-center">
+      {requestError && <ErrorAlert message="Can't send request" />}
       <div className="col-lg-6 col-md-8 col-xs-10 col-12">
         <h3 className="text-center">Change Password</h3>
         <form onSubmit={handleSubmit}>

@@ -20,6 +20,7 @@ import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
 import UserInfo from "../Module/UserInfo/UserInfo";
 import ChangePassword from "../Module/ChangePassword/ChangePassword";
+import ResetPassword from "../Module/ResetPassword/ResetPassword";
 import LogIn from "../Module/Authentication/LogIn";
 
 import Register from "../Module/Authentication/Register1";
@@ -272,6 +273,7 @@ export default function Dashboard() {
               <DataInfo path="data-info" />
               <UserInfo path="user-info" />
               <ChangePassword path="change-password"/>
+              <ResetPassword path="reset-password"/>
             </Router>
           </Grid>
         </Container>

@@ -26,6 +26,7 @@ export const config = {
     motorState: "/motor",
     publish: "/publish/",
     userInfo: "/user-info",
-    changePassword: "/change-password"
+    changePassword: "/change-password",
+    resetPassword: "/reset-password"
   },
 };
