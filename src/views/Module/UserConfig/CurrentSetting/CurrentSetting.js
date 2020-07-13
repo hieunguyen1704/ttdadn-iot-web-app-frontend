@@ -10,6 +10,7 @@ import Brightness5Icon from "@material-ui/icons/Brightness5";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
+import ButtonNotification from "../ButtonArea/ButtonNotification";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -32,6 +33,7 @@ export default function CurrentSetting(props) {
           ) : (
             <h4 style={{ color: "red" }}>Clothes are not being dried! </h4>
           )}
+          <ButtonNotification />
           <Grid
             container
             direction="row"
@@ -44,7 +46,7 @@ export default function CurrentSetting(props) {
               aria-label="add config"
               style={{
                 marginLeft: 10,
-                backgroundColor: "#f50057",
+                backgroundColor: "#2ecc71",
                 color: "#fff",
               }}
             >

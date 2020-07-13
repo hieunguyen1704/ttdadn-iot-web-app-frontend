@@ -27,6 +27,7 @@ export const config = {
     publish: "/publish/",
     userInfo: "/user-info",
     changePassword: "/change-password",
-    resetPassword: "/reset-password"
+    resetPassword: "/reset-password",
+    toggleNotification: "/toggle-notification"
   },
 };
