@@ -5,6 +5,7 @@ import { logout } from "../Authentication/action/auth";
 import { navigate } from "@reach/router";
 import { useDispatch } from "react-redux";
 import ErrorAlert from "../../Alert/ErrorAlert";
+import Loading from "../UserConfig/Loading/Loading";
 import { useSelector } from "react-redux";
 const ChangePassword = () => {
   const [currentPass, setCurrentPass] = useState("");
@@ -56,6 +57,9 @@ const ChangePassword = () => {
         }, 5000);
       });
   };
+  if (isAuthenticated === null) {
+    return <Loading />;
+  }
   if (!isAuthenticated) {
     return <h3>Please Log in to change password</h3>;
   }

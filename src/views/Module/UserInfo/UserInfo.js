@@ -4,6 +4,7 @@ import { config } from "../../../config";
 import ErrorAlert from "../../Alert/ErrorAlert";
 import { storage } from "../../../firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Loading from "../UserConfig/Loading/Loading";
 import "./UserInfo.scss";
 import { useSelector } from "react-redux";
 const UserInfo = () => {
@@ -55,9 +56,9 @@ const UserInfo = () => {
     if (event.target.files[0]) {
       let imageFile = event.target.files[0];
       if (!imageFile.name.match(/\.(jpg|jpeg|png|gif)$/)) {
-        setInvalidImage("Please select valid image."); 
+        setInvalidImage("Please select valid image.");
         return false;
-      }else{
+      } else {
         setAvatar(imageFile);
         setInvalidImage(null);
       }
@@ -106,10 +107,10 @@ const UserInfo = () => {
         // console.log(response.data.data);
         if (response.data.data !== "Update successful") {
           setMessage(response.data.data);
-          setHasError(true);
-          setTimeout(() => {
-            setHasError(false);
-          }, 5000);
+          // setHasError(true);
+          // setTimeout(() => {
+          //   setHasError(false);
+          // }, 5000);
         } else {
           location.reload();
         }
@@ -124,6 +125,9 @@ const UserInfo = () => {
         }, 5000);
       });
   };
+  if (isAuthenticated === null) {
+    return <Loading />;
+  }
   if (!isAuthenticated) {
     return <h3>Please log in to see profile</h3>;
   }
@@ -150,7 +154,7 @@ const UserInfo = () => {
                 type="text"
                 className={
                   message === "Username is already taken"
-                    ? "form-control border-error"
+                    ? "form-control is-invalid"
                     : "form-control"
                 }
                 id="username"
@@ -158,6 +162,9 @@ const UserInfo = () => {
                 onChange={handleUserNameChange}
                 required
               />
+              {message === "Username is already taken" && (
+                <p style={{ marginTop: 5, color: "red" }}>{message}</p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
@@ -165,7 +172,7 @@ const UserInfo = () => {
                 type="email"
                 className={
                   message === "Email is already taken"
-                    ? "form-control border-error"
+                    ? "form-control is-invalid"
                     : "form-control"
                 }
                 id="email"
@@ -173,13 +180,20 @@ const UserInfo = () => {
                 onChange={handleEmailChange}
                 required
               />
+              {message === "Email is already taken" && (
+                <p style={{ marginTop: 5, color: "red" }}>{message}</p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="avatar">Avatar</label>
               <br />
               <div className="row">
                 <div className="col-md-8 col-12">
-                  <input type="file" id="avatar" onChange={handleAvatarChange} />
+                  <input
+                    type="file"
+                    id="avatar"
+                    onChange={handleAvatarChange}
+                  />
                 </div>
                 <div className="col-md-4 col-6 d-md-flex justify-content-md-end mt-md-0 mt-3">
                   <button
