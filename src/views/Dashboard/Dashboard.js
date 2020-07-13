@@ -19,6 +19,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
 import UserInfo from "../Module/UserInfo/UserInfo";
+import ChangePassword from "../Module/ChangePassword/ChangePassword";
 import LogIn from "../Module/Authentication/LogIn";
 
 import Register from "../Module/Authentication/Register1";
@@ -270,6 +271,7 @@ export default function Dashboard() {
               <UserConfig path="user-config" />
               <DataInfo path="data-info" />
               <UserInfo path="user-info" />
+              <ChangePassword path="change-password"/>
             </Router>
           </Grid>
         </Container>

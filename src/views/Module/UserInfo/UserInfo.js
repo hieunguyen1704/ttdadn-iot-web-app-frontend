@@ -101,7 +101,7 @@ const UserInfo = () => {
     axios
       .put(userInfoUrl, sendData)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         if (response.data.data !== "Update successful") {
           setMessage(response.data.data);
           setHasError(true);
