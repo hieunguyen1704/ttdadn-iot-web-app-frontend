@@ -12,8 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from './action/auth'
-import { message, Spin } from 'antd';
-import { RESET_ALERT } from './actionsType/actiontype';
+import {Spin } from 'antd';
+// import { RESET_ALERT } from './actionsType/actiontype';
 import validateInput from './share/signup'
 
 const useStyles = makeStyles((theme) => ({
@@ -107,10 +107,11 @@ export default function Register() {
                             id="username"
                             label="Username"
                             name="username"
+                            // eslint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus
                             onChange={e => onChange(e)}
                         />
-                        {errors.username && <span className="help-block">{errors.username}</span>}
+                        {errors.username && <span className="help-block" style={{ color: "red"}}>{errors.username}</span>}
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -123,7 +124,7 @@ export default function Register() {
                             onChange={e => onChange(e)}
 
                         />
-                        {errors.email && <span className="help-block">{errors.username}</span>}
+                        {errors.email && <span className="help-block" style={{ color: "red"}}>{errors.email}</span>}
 
                         <TextField
                             variant="outlined"
@@ -137,7 +138,7 @@ export default function Register() {
                             autoComplete="current-password"
                             onChange={e => onChange(e)}
                         />
-                        {errors.password && <span className="help-block">{errors.password}</span>}
+                        {errors.password && <span className="help-block" style={{ color: "red"}}>{errors.password}</span>}
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -148,7 +149,7 @@ export default function Register() {
                             type="password"
                             onChange={e => onChange(e)}
                         />
-                        {errors.password2 && <span className="help-block">{errors.password2}</span>}
+                        {errors.password2 && <span className="help-block" style={{ color: "red"}}>{errors.password2}</span>}
 
                         <Button
                             type="submit"

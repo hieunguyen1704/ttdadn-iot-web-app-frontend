@@ -15,5 +15,9 @@ export const config = {
     switch: "/auth/configAuto",
     motorState: "/motor",
     publish: "/publish/",
+    userInfo: "/user-info",
+    changePassword: "/change-password",
+    resetPassword: "/reset-password",
+    toggleNotification: "/toggle-notification"
   },
 };

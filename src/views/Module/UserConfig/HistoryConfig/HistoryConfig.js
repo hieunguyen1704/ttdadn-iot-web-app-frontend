@@ -140,7 +140,7 @@ export default function HistoryConfig(props) {
     return (
       <Grid container spacing={3} className="flex-center">
         <Grid item md={10} xs={12}>
-          <h1>History Config</h1>
+          <h4 style={{marginTop: 25}}>History Config</h4>
         </Grid>
         <Grid item md={10} xs={12}>
           <TableContainer component={Paper}>
@@ -251,7 +251,7 @@ export default function HistoryConfig(props) {
   return (
     <Grid container spacing={3} className="flex-center">
       <Grid item md={10} xs={12}>
-        <h1>Please Choose Setting</h1>
+        <h3 style={{marginTop: 15}}>Please Choose Setting</h3>
       </Grid>
     </Grid>
   );

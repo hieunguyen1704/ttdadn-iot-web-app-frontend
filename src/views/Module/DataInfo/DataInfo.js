@@ -202,9 +202,9 @@ const DataInfo = (props) => {
         {loading ? (
           <Loading />
         ) : (
-          <h1 style={{ textAlign: "center" }}>
+          <h3 style={{ textAlign: "center" }}>
             Please log in before viewing data
-          </h1>
+          </h3>
         )}
       </Grid>
     </Grid>
