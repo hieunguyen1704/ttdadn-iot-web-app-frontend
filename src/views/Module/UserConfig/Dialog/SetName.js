@@ -29,7 +29,8 @@ export default function FormDialog(props) {
       .then((response) => {
         if (response.data.data === "successful") {
           setOpen(false);
-          window.location.reload();
+          // window.location.reload();
+          props.succeeded();
         }
       })
       .catch((error) => {
