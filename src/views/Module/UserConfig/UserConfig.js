@@ -58,7 +58,7 @@ class UserConfig extends Component {
     });
   }
   submitSuccessHandler() {
-    console.log("submit succeeded");
+    // console.log("submit succeeded");
     this.setState({
       historyConfig: [],
       displayAlert: false,
@@ -186,7 +186,7 @@ class UserConfig extends Component {
       let motorUrl = config.dbURl + config.api.motorState;
       Axios.get(motorUrl)
         .then((response) => {
-          console.log("Get Motor State:  " + response.data.data);
+          // console.log("Get Motor State:  " + response.data.data);
           if (response.data.data !== this.state.isTurn) {
             // console.log("Get Motor State:  " + response.data.data);
             this.setState({
@@ -228,7 +228,7 @@ class UserConfig extends Component {
     }
   }
   componentWillUnmount() {
-    console.log("UserConfig WillUnmount");
+    // console.log("UserConfig WillUnmount");
     clearInterval(this.timeInterval);
   }
   // @deletedIndex is the id of config in db
