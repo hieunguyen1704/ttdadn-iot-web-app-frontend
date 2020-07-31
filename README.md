@@ -1,36 +1,5 @@
 # TTDADN Frontend
 
-ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\
-TRƯỜNG ĐẠI HỌC BÁCH KHOA\
-KHOA KHOA HỌC - KỸ THUẬT MÁY TÍNH
-
-![image](images/hcmut.png)
-
-<span>**<span>THỰC TẬP ĐỒ ÁN ĐA NGÀNH</span>**</span>\
-  \
-
-\
-\
-\
-**<span>Đề tài</span>**\
-****\
-**<span>Điều khiển hệ thống phơi đồ tự động</span>**\
-****
-
-[h]
-
-<span>rrl</span>
-
-& GVHD: & KS. TRẦN NGỌC BẢO DUY\
-& Nhóm: & 2\
-& Sinh viên: & Lê Vũ Minh Huy - 1711495\
-& & Chế Minh Huy - 1711469\
-& & Nguyễn Đăng Huy - 1711505\
-& & Trần Xuân Hội - 1711457\
-& & Nguyễn Lê Hoàng Hiệu - 1711355
-
-<span>TP. HỒ CHÍ MINH, 14 THÁNG 5/2020</span>
-
 GIỚI THIỆU ĐỀ TÀI
 =================
 
@@ -80,11 +49,24 @@ Các thiết bị sử dụng:
 ---------------------
 
 Bảng thiết bị:
-
-<span> |c|c|c| </span> Số thứ tự thiết bị & Tên thiết bị\
-5 & Nhiệt độ - độ ẩm không khí\
-6 & Cường độ ánh sáng\
-9 & Motor và động cơ ( Theo cập nhật mới nhất là loa )\
+<table>
+    <tr>
+        <th>Số thứ tự thiết bị</th>
+        <th>Tên thiết bị</td>
+    </tr>
+    <tr>
+    <td>5</td>
+    <td>Nhiệt độ - độ ẩm không khí</td>
+    </tr>
+    <tr>
+    <td>6</td>
+    <td>Cường độ ánh sáng</td>
+    </tr>
+    <tr>
+    <td>9</td>
+    <td>Motor và động cơ ( Theo cập nhật mới nhất là loa )</td>
+    </tr>
+</table>
 
 THIẾT KẾ HỆ THỐNG
 =================
@@ -146,73 +128,19 @@ Sơ đồ Use-Case và mô tả:
 
 ![Quản lý đăng nhập](images/userController.png)
 
-<span> | p<span>3cm</span> | p<span>10cm</span>| </span> Actors & Người
-dùng\
-Description & Cho phép người dùng dễ dàng đăng nhập, đăng ký.\
-Data & Thông tin bảo mật về email, mật khẩu, thông tin người dùng.\
-Stimulus & Người dùng đăng nhập, đăng ký thông qua giao diện của hệ
-thống..\
-Response & • Cho phép người dùng tiếp tục vào ứng dụng nếu đăng nhập
-thành công\
-& • Sau khi đăng kí xong người dùng phải đăng nhập\
-Comments & Yêu cầu người dùng phải có kết nối mạng trong quá trình này.
-Nếu người dùng đã đăng nhập rồi thì những lần sau sẽ được tự động đưa
-thẳng vào ứng dụng mà không cần phải đăng nhập lại\
-
 ### Chức năng của người dùng
 
 ![Các chức năng của người dùng](images/extent_feature.png)
 
-<span> | p<span>3cm</span> | p<span>10cm</span>| </span> Actors & Người
-dùng\
-Description & Cho phép người dùng đổi mật khẩu và lấy lại mật khẩu. Có
-thể chỉnh sửa thông tin cá nhân như ảnh đại diện, email, tên,...\
-Data & Thông tin hiện tại của người dùng và các thông tin bảo mật về mật
-khẩu cũ và mật khẩu mới\
-Stimulus & Người dùng đổi mật khẩu và lấy mật khẩu, cập nhật thông tin
-cá nhân thông qua giao diện\
-Response & • Sau khi đổi mật khẩu xong người dùng phải đăng nhập lại\
-& • Sau khi nhập email để lấy lại mật khẩu, mật khẩu sẽ được tạo ngẫu
-nhiên và gửi đến email .\
-& • Cập nhật thành công dữ liệu mới sẽ được lưu vào cơ sở dữ liệu\
-Comments & Yêu cầu người dùng phải có kết nối mạng trong quá trình này.
-Đối với tính năng cập nhật thông tin và mật khẩu yêu cầu người dùng phải
-đăng nhập.\
-
 ### Thiết lập ngưỡng và điều khiển sào phơi đồ:
 
-![Thiết lập ngưỡng và điều khiển phơi
-đồ](config_image/configUsecase.png "fig:") [fig:my~l~abel]
+![Thiết lập ngưỡng và điều khiển phơi đồ](images/config_image/configUsecase.png)
 
-<span> | p<span>3cm</span> | p<span>10cm</span>| </span> Actors & Người
-dùng admin.\
-Description & Thiết lập ngưỡng và điều khiển trạng thái sào phơi đồ.\
-Data & Dữ liệu các ngưỡng được thiết lập và trạng thái bật tắt của sào
-phơi đồ.\
-Stimulus & Người dùng chọn vào thiết lập.\
-Response & Cho phép admin thiết lập ngưỡng sau đó trạng thái sào phơi đồ
-tự động điều chỉnh dựa vào ngưỡng đã thiết lập. Admin cũng có thể điều
-khiển trạng thái sào phơi đồ khi ở chế dộ điều khiển bằng tay. Ngoài ra
-admin cũng có thể nhận email thông báo trạng thái sào phơi đồ khi thay
-đổi nếu bật tính năng này\
-Comments & Người dùng phải đăng nhập, và người dùng phải là admin thì
-mới có thể sử dụng đầy đủ chức năng này.\
 
 ### Xem dữ liệu do sensor trả về
 
-![Xem biểu đồ dữ liệu](user_image/usecaseData.png "fig:")
-[fig:my~l~abel]
+![Xem biểu đồ dữ liệu](images/user_image/usecaseData.png)
 
-<span> | p<span>3cm</span> | p<span>10cm</span>| </span> Actors & Người
-dùng.\
-Description & Xem dữ liệu do sensor trả về được biểu diễn bằng đồ thị.\
-Data & Số liệu về nhiệt độ, độ ẩm, ánh sáng được các sensor đo được và
-trả về ở thời điểm hiện tại.\
-Stimulus & Người dùng chọn vào xem dữ liệu.\
-Response & Hiển thị dữ liệu theo phút, giờ, ngày, tháng,... tùy thuộc
-vào lựa chọn của người dùng.\
-Comments & Người dùng phải đăng nhập thì mới có thể sử dụng được chức
-năng này.\
 
 Thiết kế cơ sở dữ liệu
 ----------------------
@@ -221,48 +149,11 @@ Thiết kế cơ sở dữ liệu
 
 ![image](images/db.png) Chú thích: Kiểu dữ liệu sử dụng trong database diagram
 trên là của Sequelize, ví dụ sequelize.STRING chứ không phải VARCHAR như
-của SQL\
-\
-
-### Code sample
-
-Ví dụ code của Data Table:\
-
-    module.exports = {
-      up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Data', {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          temperature: {
-            type: Sequelize.INTEGER
-          },
-          humid: {
-            type: Sequelize.INTEGER
-          },
-          light: {
-            type: Sequelize.INTEGER
-          },
-          createdAt: {
-            allowNull: false,
-            type: Sequelize.DATE
-          },
-          updatedAt: {
-            allowNull: false,
-            type: Sequelize.DATE
-          }
-        });
-      },
-      down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Data');
-      }
-    };
+của SQL.
 
 Và kết quả trên pgAdmin:\
-![image](images/dataSample.png) Dữ liệu trong bảng data được cập nhật tự động
+![image](images/dataSample.png)\
+Dữ liệu trong bảng data được cập nhật tự động
 bằng cách subcribe vào mqtt broker của server nhóm CE, từ đó được thêm
 mới vào liên tục. Trên đây là fake data nhóm thử nghiệm trên một server
 tự tạo.
@@ -359,7 +250,7 @@ Màn hình đăng ký:
     -   Email đăng ký chưa từng được sử dụng trong ứng dụng này, nếu
         đăng ký trùng email sẽ bị báo lỗi.
 
-![Màn hình đăng ký](signup.png)
+![Màn hình đăng ký](images/signup.png)
 
 Màn hình quên mật khẩu:
 -----------------------
@@ -371,18 +262,12 @@ Màn hình quên mật khẩu:
     -   Email phải đúng định dạng và đúng với tài khoản cần lấy lại mật
         khẩu.
 
-        ![Màn hình lấy lại mật khẩu](forgotpassword.png)
-
-        <span> |p<span>4cm</span>| p<span>3cm</span> |
-        p<span>6cm</span>| </span> Item & Action & Description\
-        Email Box & Nhập & Nhập email để reset mật khẩu.\
-        Get Password Button & Click & Gửi yêu cầu reset password.\
+![Màn hình lấy lại mật khẩu](images/forgotpassword.png)
 
 -   Thông báo reset password thành công:
 
-    ![Reset password thành công](user_image/reset_pass.PNG)
-
-    ![Email thông báo password mới](user_image/change_pass.PNG)
+![Reset password thành công](images/user_image/reset_pass.PNG)
+![Email thông báo password mới](images/user_image/change_pass.PNG)
 
 Màn hình đổi mật khẩu:
 ----------------------
@@ -396,18 +281,10 @@ Màn hình đổi mật khẩu:
 
     -   Người dùng phải nhập mật khẩu mới và xác nhận mật khẩu mới chính
         xác.
-
-    ![Màn hình đổi mật khẩu](changepassword.png)
-
-    <span> |p<span>4cm</span>| p<span>3cm</span> | p<span>6cm</span>|
-    </span> Item & Action & Description\
-    Current Password Box & Nhập & Nhập mật khẩu hiện tại.\
-    New Password Box & Nhập & Nhập mật khẩu mới.\
-    Confirm Password Box & Nhập & Nhập lại mật khẩu\
-    Save Button & Click & Xác nhật thay đổi mật khẩu..\
-
+    
 -   Sau khi thay đổi mật khẩu người dùng sẽ được chuyển đến trang login
     và phải tiến hành đăng nhập lại.
+![Màn hình đổi mật khẩu](images/changepassword.png)
 
 Màn hình đổi thông tin cá nhân:
 -------------------------------
@@ -421,21 +298,13 @@ Màn hình đổi thông tin cá nhân:
 -   Tiêu chí: Email phải đúng định dạng. Không được sử dụng email và
     username trùng với user khác.
 
-    ![Xem và cập nhật profile](config_image/profile.PNG)
+    ![Xem và cập nhật profile](images/config_image/profile.PNG)
 
-    <span> |p<span>4cm</span>| p<span>3cm</span> | p<span>6cm</span>|
-    </span> Item & Action & Description\
-    Name Box & Nhập & Nhập tên của người dùng.\
-    Username Box & Nhập & Nhập username của người dùng.\
-    Email Box & Nhập & Nhập email của người dùng.\
-    Chose File Button & Click & Chọn hình ảnh đại diện\
-    Upload Button & Click & Upload ảnh đại diện lên cloud storage.\
-    Save Button & Click & Lưu tất cả các thay đổi.\
 
 Màn hình thiết lập ngưỡng và điều khiển phơi đồ
 -----------------------------------------------
 
-​1. Thay đổi trạng thái sào phơi đồ bằng tay:
+1. Thay đổi trạng thái sào phơi đồ bằng tay:
 
 -   Thay đổi trạng thái sào phơi đồ:
 
@@ -445,14 +314,10 @@ Màn hình thiết lập ngưỡng và điều khiển phơi đồ
 
     -   Phải chọn chế độ điều khiển bằng tay.
 
-![Màn hình thay đổi trạng thái sào phơi
-đồ](config_image/switchonoff.PNG "fig:") [fig:my~l~abel]
+![Màn hình thay đổi trạng thái sào phơi đồ](images/config_image/switchonoff.PNG)
 
-<span> |p<span>3cm</span>| p<span>4cm</span> | p<span>6cm</span>|
-</span> Item & Action & Description\
-Switch Button & Click & Thay đổi trạng thái sào phơi đồ.\
 
-​2. Thông tin về thiết lập hiện tại trạng thái sào phơi đồ và bật tắt
+2. Thông tin về thiết lập hiện tại trạng thái sào phơi đồ và bật tắt
 thông báo:
 
 -   Xem thông tin của lần thiết lập ngưỡng sau cùng của admin, trạng
@@ -464,10 +329,9 @@ thông báo:
     -   Yêu cầu người dùng đăng nhập là admin và phải bật chế độ điều
         chỉnh là auto.
 
-![Ngưỡng thiết lập hiện tại](config_image/currentconfig.PNG "fig:")
-[fig:my~l~abel]
+![Ngưỡng thiết lập hiện tại](images/config_image/currentconfig.PNG)
 
-​3. Thiết lập ngưỡng:
+3. Thiết lập ngưỡng:
 
 -   Thiết lập ngưỡng nhiệt độ, độ ẩm, không khí.
 
@@ -476,15 +340,10 @@ thông báo:
     -   Yêu cầu người dùng đăng nhập là admin và phải bật chế độ điều
         chỉnh là auto.
 
-![Thiết lập ngưỡng](config_image/setting.PNG "fig:") [fig:my~l~abel]
+![Thiết lập ngưỡng](images/config_image/setting.PNG)
 
-<span> |p<span>3cm</span>| p<span>4cm</span> | p<span>6cm</span>|
-</span> Item & Action & Description\
-Slider & Giữ và kéo & Điều chỉnh các ngưỡng thiết lập .\
-Apply Button & Click & Lưu ngưỡng thiết lập .\
-Reset Button & Click & Reset lại dữ liệu .\
 
-​4. Lịch sử thiết lập ngưỡng:
+4. Lịch sử thiết lập ngưỡng:
 
 -   Xem lịch sử các lần thiết lập ngưỡng, chọn để áp dụng hoặc xóa một
     ngưỡng đã thiết lập trước đó.
@@ -494,14 +353,10 @@ Reset Button & Click & Reset lại dữ liệu .\
     -   Yêu cầu người dùng đăng nhập phải là admin và phải bật chế độ
         điều chỉnh là auto..
 
-![Lịch sử thiết lập ngưỡng](config_image/historyconfig.PNG)
+![Lịch sử thiết lập ngưỡng](images/config_image/historyconfig.PNG)
 
-<span> |p<span>3cm</span>| p<span>4cm</span> | p<span>6cm</span>|
-</span> Item & Action & Description\
-Delete Button & Click & Xóa 1 thiết lập\
-Check Button & Click & Áp dụng 1 thiết lập làm ngưỡng hiện tại.\
 
-​5. Gửi email thông báo trạng thái phơi đồ:
+5. Gửi email thông báo trạng thái phơi đồ:
 
 -   Nhận email thống báo thay đổi trạng thái sào phơi đồ và một số thông
     tin liên quan như ngưỡng thiết lập, nhiệt độ, độ ẩm không khí.
@@ -513,7 +368,7 @@ Check Button & Click & Áp dụng 1 thiết lập làm ngưỡng hiện tại.\
 
     -   Bật chế độ gửi email thông báo.
 
-![Email sào phơi đồ thay đổi trạng thái](config_image/emailconfig.PNG)
+![Email sào phơi đồ thay đổi trạng thái](images/config_image/emailconfig.PNG)
 
 Màn hình xem dữ liệu do sensor trả về
 -------------------------------------
@@ -523,16 +378,13 @@ Màn hình xem dữ liệu do sensor trả về
 
 -   Tiêu chí: Yêu cầu người dùng phải đăng nhập vào hệ thống.
 
-![Đồ thị dữ liệu do sensor trả về](user_image/data.PNG)
+![Đồ thị dữ liệu do sensor trả về](images/user_image/data.PNG)
 
-<span> |p<span>4cm</span>| p<span>3cm</span> | p<span>6cm</span>|
-</span> Item & Action & Description\
-Select Box & Chọn & Chọn xem dữ liệu theo phút, giờ, ngày, tháng ...\
 
 Về MQTT Server
 --------------
 
-![image](mqtt.png) Theo như mô tả tổng quan, server của nhóm sẽ hiện
+![image](images/mqtt.png) Theo như mô tả tổng quan, server của nhóm sẽ hiện
 thực 2 hàm chức năng. Broker nhóm sử dụng là của broker online của
 hivemq mqtt để test, và server của CE.
 
@@ -546,102 +398,6 @@ hivemq mqtt để test, và server của CE.
         user đó là **admin** và đang để chế độ **auto** thì sẽ kiểm tra
         ngưỡng đó, nếu vượt ngưỡng sẽ gọi hàm publish để điều chỉnh
         motor phơi đồ.
-
-    Code:
-
-            var mqtt = require('mqtt');
-            
-            export const subscribe = () => {
-              var client  = mqtt.connect('ws://broker.hivemq.com:8000/mqtt');
-            
-              // var client = mqtt.connect({
-              //   servers: [{ host: '52.187.125.59', port: 1883, protocol: 'tcp' }],
-              //   username: 'BKvm',
-              //   password: 'Hcmut_CSE_2020',
-              // });
-            
-              var topic_TempHumi = 'Topic/TempHumi';
-              var topic_Light = 'Topic/Light';
-
-              try {
-                client.on('connect', function () {
-                  client.subscribe(topic_TempHumi);
-                  client.subscribe(topic_Light);
-                });
-                var temp = -1;
-                var humid = -1;
-                var light = -1;
-                client.on('message', function (topic, message) {
-                  try {
-                    var mes = message;
-            
-                    var jsonMessage = JSON.parse(mes.toString());
-                    console.log(jsonMessage[0]);
-            
-                    if (jsonMessage[0].device_id == 'TempHumi ') {
-                      temp = parseFloat(jsonMessage[0].values[0]);
-                      humid = parseFloat(jsonMessage[0].values[1]);
-                    }
-            
-                    if (jsonMessage[0].device_id == 'Light') {
-                      light = parseFloat(jsonMessage[0].values[0]);
-                    }
-            
-                    if (temp != -1 && humid != -1 && light != -1) {
-                      if (global.saveDB) {
-                        db.Data.create({
-                          temperature: temp,
-                          humid: humid,
-                          light: light,
-                        });
-            
-                        doIt(temp, humid, light);
-                      }
-            
-                      temp = -1;
-                      humid = -1;
-                      light = -1;
-                    }
-                  } catch (error) {
-                    console.error(error.message);
-                  }
-                });
-              } catch (error) {
-                console.error(error.message);
-              }
-            };
-            
-            const doIt = async (temp, humid, light) => {
-              const users = await db.User.findAll({
-                where: { isAuto: true, isAdmin: true },
-              });
-              if (users.length > 0) {
-                const user = users[0];
-                const userConfig = await db.UserConfig.findAll({
-                  where: {
-                    userId: user.id,
-                  },
-                  limit: 1,
-                  order: [['id', 'DESC']],
-                });
-            
-                if (
-                  temp != -1 &&
-                  temp > parseFloat(userConfig[0].tempeThreshold) &&
-                  humid != -1 &&
-                  humid < parseFloat(userConfig[0].humidThreshold) &&
-                  light != -1 &&
-                  light > parseFloat(userConfig[0].lightThreshold)
-                ) {
-                  publish(true);
-                  console.log('publish true');
-                } else {
-                  publish(false);
-                  console.log('publish false');
-                }
-              }
-            };
-            
 
 -   Publish
 
@@ -663,101 +419,7 @@ hivemq mqtt để test, và server của CE.
         Hàm này sẽ gửi email thông báo đến cho người dùng đó mỗi khi cây
         phơi đồ thay đổi trạng thái.
 
-    Code:
-
-        export const publish = (status) => {
-          return new Promise((resolve, reject) => {
-            try {
-              // const client = mqtt.connect({
-              //   servers: [{ host: '52.187.125.59', port: 1883, protocol: 'tcp' }],
-              //   username: 'BKvm',
-              //   password: 'Hcmut_CSE_2020',
-              // });
-              var client  = mqtt.connect('ws://broker.hivemq.com:8000/mqtt');
-              let topic = 'Topic/Speaker';
-
-              let turnOnMes = '[{"device_id": "Speaker", "values": ["1", "2000"]}]';
-              let turnOffMes = '[{"device_id": "Speaker", "values": ["0", "2000"]}]';
-              //false, true
-              client.on('connect', async function () {
-                const stateLog = await db.motorLogs.findAll({
-                  order: [['createdAt', 'ASC']],
-                });
-                //get admin info for email send
-                const email = [];
-                let threshold = {};
-                let current = {}; 
-                const users = await db.User.findAll({
-                  where: { isAuto: true, isAdmin: true },
-                });
-                if(users.length > 0){
-                  const user = users[0];
-                  email.push(user.email);
-                  const lastConfig = await db.UserConfig.findAll({
-                    where: {
-                      userId: user.id,
-                    },
-                    limit: 1,
-                    order: [['id', 'DESC']],
-                  });
-                  threshold = {
-                    temp : lastConfig[0].tempeThreshold,
-                    humid: lastConfig[0].humidThreshold,
-                    light: lastConfig[0].lightThreshold
-                  }
-                  const lastData = await db.Data.findAll({
-                    limit: 1,
-                    order: [['id', 'DESC']],
-                  })
-                  current = {
-                    temp : lastData[0].temperature,
-                    humid: lastData[0].humid,
-                    light: lastData[0].light
-                  }
-                }
-                console.log('Before State: ', stateLog[stateLog.length - 1].state);
-                if (status) {
-                  if (!stateLog[stateLog.length - 1].state) {
-                    await db.motorLogs.create({
-                      state: true,
-                    });
-                    client.publish(topic, turnOnMes);
-                    setTimeout(() => {
-                      client.publish(topic, turnOffMes);
-                    }, 10000);
-                    if(users.length > 0){ // send email to admin
-                      if(users[0].isNotification == true){
-                        sendEmail(email, "Do dang duoc phoi", threshold, current);
-                      }
-                    }
-                  }
-                } else {
-                  if (stateLog[stateLog.length - 1].state) {
-                    await db.motorLogs.create({
-                      state: false,
-                    });
-                    client.publish(topic, turnOnMes);
-                    setTimeout(() => {
-                      client.publish(topic, turnOffMes);
-                    }, 10000);
-                    if(users.length > 0){ // send email to admin
-                      if(users[0].isNotification == true){
-                        sendEmail(email, "Do dang duoc lay vao", threshold, current);
-                      }
-                    }
-                  }
-                }
-                resolve(true);
-              });
-              setTimeout(() => reject('Timeout'), 3500);
-            } catch (error) {
-              reject(error);
-            }
-          });
-        };
-
-            
-
+ 
 PHÂN TÍCH VÀ KẾT LUẬN
 =====================
 
@@ -810,25 +472,9 @@ LINK TRANG WEB
 của nhóm:\
 <https://ttdadn-cse.web.app/>
 
-PHÂN CÔNG CÔNG VIỆC
+
+TÀI LIỆU
 ===================
-
-<span>
-|p<span>4cm</span>|p<span>2cm</span>|p<span>6cm</span>|p<span>2cm</span>|
-</span> Tên thành viên & MSSV & Nội dung công việc & Đánh giá\
-
-Lê Vũ Minh Huy & 1711495 & Trao đổi nội dung công việc với giáo viên,
-phân tích tính năng, đánh giá mức độ hoàn thiện của tính năng & 100 %\
-Chế Minh Huy & 1711469 & Kết nối Back-end với các thiết bị phần cứng &
-100 %\
-Nguyễn Đăng Huy & 1711505 & Khởi tạo ứng dụng, quản lý các phiên bản ứng
-dụng, đưa ứng dụng lên cloud & 100 %\
-Trần Xuân Hội & 1711457 & Xây dựng các tính năng thông tin người dùng &
-100 %\
-Nguyễn Lê Hoàng Hiệu & 1711355 & Xây dựng các tính năng thông tin về hệ
-thống và cảm biến & 100 %\
-
-<span>5</span>
 
 NodeJS Documentation: <https://nodejs.org/dist/latest-v14.x/docs/api/>
 
