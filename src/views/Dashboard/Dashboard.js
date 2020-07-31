@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -12,39 +11,30 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { Router } from "@reach/router";
-import { mainListItems } from "./listItems";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MainListItems from "./listItems";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import UserConfig from "../Module/UserConfig/UserConfig";
 import DataInfo from "../Module/DataInfo/DataInfo";
-import LogIn from '../Module/Authentication/LogIn'
+import UserInfo from "../Module/UserInfo/UserInfo";
+import ChangePassword from "../Module/ChangePassword/ChangePassword";
+import ResetPassword from "../Module/ResetPassword/ResetPassword";
+import LogIn from "../Module/Authentication/LogIn";
 
 import Register from "../Module/Authentication/Register1";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../Module/Authentication/action/auth";
 import { navigate } from "@reach/router";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import PeopleIcon from "@material-ui/icons/People";
-import SwitchComponent from '../Module/Authentication/components/switchComponent';
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+// import PeopleIcon from "@material-ui/icons/People";
+import SwitchComponent from "../Module/Authentication/components/switchComponent";
+import { config } from "../../config";
+import axios from "axios";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -116,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
     marginLeft: "auto",
     marginRight: "auto",
-    width: "100%"
+    width: "100%",
   },
   paper: {
     padding: theme.spacing(2),
@@ -139,21 +129,41 @@ export default function Dashboard() {
     setOpen(false);
   };
   // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const dispatch = useDispatch()
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
-  const userchange = useSelector(state => state.auth.user)
-  const [username, setUsername] = useState('')
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userchange = useSelector((state) => state.auth.user);
+  const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+
+  //get avatar
+  useEffect(() => {
+    const userInfoUrl = config.dbURl + config.api.userInfo;
+    let mounted = true;
+    axios
+      .get(userInfoUrl)
+      .then((response) => {
+        if (mounted) {
+          const avatarUrl = response.data.data[0].avatar;
+          setAvatarUrl(avatarUrl);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, [userchange]);
   useEffect(() => {
     if (userchange) {
-      setUsername(userchange.username)
-      console.log(username)
+      setUsername(userchange.username);
     }
-  }, [userchange])
+  }, [userchange]);
   // eslint-disable-next-line no-unused-vars
   const onLogout = async (e) => {
-    dispatch(logout())
-    navigate("login")
-  }
+    dispatch(logout());
+    navigate("login");
+  };
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -187,21 +197,32 @@ export default function Dashboard() {
             {/* <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge> */}
-            {!isAuthenticated && <ListItem button >
-              <ListItemIcon>
-                <LockOpenIcon />
-              </ListItemIcon>
-              <ListItemText primary="Login" />
-            </ListItem>}
+            {!isAuthenticated && (
+              <ListItem button>
+                <ListItemIcon>
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText primary="Login" />
+              </ListItem>
+            )}
           </IconButton>
           {/* display username */}
-          <IconButton color="inherit" >
-            {isAuthenticated && <ListItem button>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary={username} />
-            </ListItem>}
+          <IconButton color="inherit" onClick={() => navigate("user-info")}>
+            {isAuthenticated && (
+              <ListItem button>
+                <img
+                  src={avatarUrl ? avatarUrl : "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"}
+                  alt="A"
+                  style={{
+                    borderRadius: "50%",
+                    width: 35,
+                    height: 35,
+                    marginRight: 10,
+                  }}
+                />
+                <ListItemText primary={username} />
+              </ListItem>
+            )}
           </IconButton>
           {isAuthenticated && <SwitchComponent />}
           {/* display logout icon  */}
@@ -226,29 +247,35 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+          <MainListItems />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid style={{ justifyContent: "center" }} container spacing={12}>
+          <Grid
+            container
+            spacing={10}
+            style={{ display: "flex", justifyContent: "center", marginTop: 10 }}
+          >
             {/* Chart */}
             {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <div>hello</div>
               </Paper>
             </Grid> */}
-            <Router >
+            <Router>
               {/* <LoginT path="testlogin" /> */}
-              <Register path='register' />
+              <Register path="register" />
               <LogIn path="login" />
               <UserConfig path="user-config" />
               <DataInfo path="data-info" />
+              <UserInfo path="user-info" />
+              <ChangePassword path="change-password"/>
+              <ResetPassword path="reset-password"/>
             </Router>
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
         </Container>
       </main>
     </div>

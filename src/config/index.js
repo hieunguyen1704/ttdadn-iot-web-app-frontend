@@ -17,10 +17,17 @@ export const config = {
   // },
   api: {
     data: "/data/get-current-record",
+    dataWithTime: "/data/time/",
     getConfig: "/user-config/",
     deleteConfig: "/user-config/delete/",
     register: "/user",
     authoterize: "/auth",
-    switch: "/auth/configAuto"
+    switch: "/auth/configAuto",
+    motorState: "/motor",
+    publish: "/publish/",
+    userInfo: "/user-info",
+    changePassword: "/change-password",
+    resetPassword: "/reset-password",
+    toggleNotification: "/toggle-notification"
   },
 };

@@ -1,6 +1,16 @@
-.data-info-component {
-  .data-chart {
+.chart{
+  width: 500px;
+}
+@media (max-width: 767.98px) { 
+  .chart{
     width: 500px;
-    height: 300px;
   }
 }
+
+@media (max-width: 575.98px) {
+  .chart{
+    width: 350px;
+  }
+}
+
+

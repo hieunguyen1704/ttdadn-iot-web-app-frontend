@@ -13,25 +13,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AlertDialog(props) {
   // eslint-disable-next-line no-unused-vars
   const [open, setOpen] = React.useState(true);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
- 
-//   console.log(props);
-
+  const handleClose = () => {
+    props.disagreed();
+    setOpen(false);
+  };
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={props.opened}>
-        Open alert dialog
-      </Button> */}
       <Dialog
         open={open}
-        // onClose={true}
+        onClose={handleClose}
         TransitionComponent={Transition}
         keepMounted
         aria-labelledby="alert-dialog-title"
@@ -48,7 +38,7 @@ export default function AlertDialog(props) {
           <Button onClick={props.disagreed} color="primary">
             Disagree
           </Button>
-          <Button onClick={props.agreed} color="primary">
+          <Button onClick={props.agreed} color="secondary">
             Agree
           </Button>
         </DialogActions>

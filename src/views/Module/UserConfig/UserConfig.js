@@ -10,9 +10,10 @@ import { config } from "../../../config";
 import { connect } from "react-redux";
 import CurrentSetting from "./CurrentSetting/CurrentSetting";
 import Loading from "./Loading/Loading";
-import DeleteAlert from './DeleteAlert/DeleteAlert';
-import Switch from './Switch/Switch';
-import MotorState from './MotorState/MotorState';
+import DeleteAlert from "./DeleteAlert/DeleteAlert";
+import Switch from "./Switch/Switch";
+// import MotorState from "./MotorState/MotorState";
+import FormDialog from "./Dialog/SetName";
 class UserConfig extends Component {
   constructor(props) {
     super(props);
@@ -26,8 +27,12 @@ class UserConfig extends Component {
       currentConfig: {},
       displayAlert: false,
       deleteConfigIndex: undefined,
-      isTurn: null
+      isTurn: null,
+      displayFormDialog: false,
+      sendData: {},
+      isDisplaySetting: false,
     };
+    this.timeInterval = 0;
   }
   changeHandler(type, event, newValue) {
     const newThreshold = {
@@ -40,18 +45,28 @@ class UserConfig extends Component {
   }
   submitHandler(event) {
     event.preventDefault();
-    const createConfigURL = config.dbURl + config.api.getConfig;
+    // display set name form
+    this.setState({
+      displayFormDialog: true,
+    });
+    // const createConfigURL = config.dbURl + config.api.getConfig;
     let { threshold } = this.state;
-    let sendData = { ...threshold };
-    Axios.post(createConfigURL, sendData)
-      .then((response) => {
-        if (response.data.data === "successful") {
-          window.location.reload();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    let sendData = { ...threshold, name: "default" };
+
+    this.setState({
+      sendData,
+    });
+  }
+  submitSuccessHandler() {
+    // console.log("submit succeeded");
+    this.setState({
+      historyConfig: [],
+      displayAlert: false,
+      deleteConfigIndex: undefined,
+      isTurn: null,
+      displayFormDialog: false,
+      sendData: {},
+    });
   }
   resetHandler() {
     this.setState({
@@ -62,67 +77,102 @@ class UserConfig extends Component {
       },
     });
   }
-  deletedHistoryHandler(configIndex) {
-    const { historyConfig} = this.state;
+  // @deletedIndex is the id of config in db
+  deletedHistoryHandler(deletedId) {
+    const { historyConfig } = this.state;
     let newHistoryConfig = [...historyConfig];
-    const deletedConfig = newHistoryConfig.splice(configIndex, 1);
-    const deletedConfigURL =
-      config.dbURl + config.api.deleteConfig + deletedConfig[0].id;
+    let configIndex = 0;
+    for (let i = 0; i < historyConfig.length; i++) {
+      if (historyConfig[i].id === deletedId) {
+        configIndex = i;
+        break;
+      }
+    }
+    // delete config
+    newHistoryConfig.splice(configIndex, 1);
+    const deletedConfigURL = config.dbURl + config.api.deleteConfig + deletedId;
     Axios.get(deletedConfigURL)
       .then((response) => {
         if (response.data.data === "deleted successful") {
           this.setState({
             historyConfig: newHistoryConfig,
             displayAlert: false,
-            deleteConfigIndex: undefined
+            deleteConfigIndex: undefined,
           });
-          // if(currentConfig){
-          //   if(deletedConfig[0].id === currentConfig.id){ 
-          //       this.setState({
-          //         currentConfig: {}
-          //       });
-          //   }
-          // }
         }
       })
       .catch((error) => {
         console.error(error);
       });
   }
-  checkedHistoryHandler(configIndex) {
-    const { threshold, historyConfig } = this.state;
-    let newThreshold = { ...threshold };
-    newThreshold.humidThreshold = historyConfig[configIndex].humidThreshold;
-    newThreshold.lightThreshold = historyConfig[configIndex].lightThreshold;
-    newThreshold.tempeThreshold = historyConfig[configIndex].tempeThreshold;
-    this.setState({
-      threshold: newThreshold,
-    });
+  checkedHistoryHandler(checkedId, name) {
+    const { historyConfig } = this.state;
+    let configIndex = 0;
+    for (let i = 0; i < historyConfig.length; i++) {
+      if (historyConfig[i].id === checkedId) {
+        configIndex = i;
+        break;
+      }
+    }
+    const humidThreshold = historyConfig[configIndex].humidThreshold;
+    const tempeThreshold = historyConfig[configIndex].tempeThreshold;
+    const lightThreshold = historyConfig[configIndex].lightThreshold;
+
+    let sendedConfig = { humidThreshold, tempeThreshold, lightThreshold, name };
+    const createConfigURL = config.dbURl + config.api.getConfig;
+    const deletedConfigURL = config.dbURl + config.api.deleteConfig + checkedId;
+    // Create new config with checked config
+    Axios.post(createConfigURL, sendedConfig)
+      .then((response) => {
+        if (response.data.data === "successful") {
+          // delete the old checked config
+          Axios.get(deletedConfigURL)
+            .then((response) => {
+              if (response.data.data === "deleted successful") {
+                this.setState({
+                  currentConfig: {
+                    humidThreshold,
+                    tempeThreshold,
+                    lightThreshold,
+                  },
+                  historyConfig: [],
+                });
+                // window.location.reload();
+                // this.ConfigInfo();
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   async ConfigInfo() {
-    const configOfUserURL =
-      config.dbURl + config.api.getConfig;
+    const configOfUserURL = config.dbURl + config.api.getConfig;
     try {
       const response = await Axios.get(configOfUserURL);
       if (response.data.data.length !== this.state.historyConfig.length) {
         this.setState({
           historyConfig: response.data.data,
-          // currentConfig:
-          //   response.data.data.length > 0
-          //     ? response.data.data[response.data.data.length - 1] //get last config
-          //     : {},
         });
       }
-      if(response.data.data.length > 0){
-        if(response.data.data[response.data.data.length - 1].id !== this.state.currentConfig.id){
+      //get last config of user
+      if (response.data.data.length > 0) {
+        if (
+          response.data.data[response.data.data.length - 1].id !==
+          this.state.currentConfig.id
+        ) {
           this.setState({
-            currentConfig: response.data.data[response.data.data.length - 1]
+            currentConfig: response.data.data[response.data.data.length - 1],
           });
         }
-      }else{
-        if(this.state.currentConfig){
+      } else {
+        if (this.state.currentConfig) {
           this.setState({
-            currentConfig: {}
+            currentConfig: {},
           });
         }
       }
@@ -130,39 +180,92 @@ class UserConfig extends Component {
       console.error(error);
     }
   }
+  // get motor state when turn on auto mode
+  getAutoMotorState() {
+    if (this.props.isAuto) {
+      let motorUrl = config.dbURl + config.api.motorState;
+      Axios.get(motorUrl)
+        .then((response) => {
+          // console.log("Get Motor State:  " + response.data.data);
+          if (response.data.data !== this.state.isTurn) {
+            // console.log("Get Motor State:  " + response.data.data);
+            this.setState({
+              isTurn: response.data.data,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
   componentDidMount() {
     if (this.props.userId) {
       this.ConfigInfo();
+      // this.getAutoMotorState();
+      // setInterval(()=>{
+      //   this.getAutoMotorState();
+      // },5000);
     }
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.userId) {
       this.ConfigInfo();
+      if (
+        prevState.currentConfig.humidThreshold !==
+          this.state.currentConfig.humidThreshold ||
+        prevState.currentConfig.tempeThreshold !==
+          this.state.currentConfig.tempeThreshold ||
+        prevState.currentConfig.lightThreshold !==
+          this.state.currentConfig.lightThreshold
+      ) {
+        this.getAutoMotorState();
+        // console.log(prevState);
+        this.timeInterval = setInterval(() => {
+          this.getAutoMotorState();
+        }, 5000);
+      }
     }
   }
-  verifyDeleteHandler(configIndex){
+  componentWillUnmount() {
+    // console.log("UserConfig WillUnmount");
+    clearInterval(this.timeInterval);
+  }
+  // @deletedIndex is the id of config in db
+  verifyDeleteHandler(deletedId) {
     this.setState({
-      displayAlert:true,
-      deleteConfigIndex: configIndex
+      displayAlert: true,
+      deleteConfigIndex: deletedId,
     });
   }
-  agreeDeleteHandler(){
-    console.log(this.state.deleteConfigIndex);
-    this.deletedHistoryHandler(this.state.deleteConfigIndex)
+  agreeDeleteHandler() {
+    this.deletedHistoryHandler(this.state.deleteConfigIndex);
   }
-  disagreeDeleteHandler(){
+  disagreeDeleteHandler() {
     this.setState({
       displayAlert: false,
-      deleteConfigIndex: undefined
+      deleteConfigIndex: undefined,
     });
   }
-  getTurnOnState(check){
+  getTurnOnState(check) {
     this.setState({
-      isTurn: check
-    })
+      isTurn: check,
+    });
   }
+  changeDisplaySetting() {
+    this.setState({
+      isDisplaySetting: !this.state.isDisplaySetting,
+    });
+  }
+
   render() {
-    const { threshold, historyConfig,displayAlert } = this.state;
+    const {
+      threshold,
+      historyConfig,
+      displayAlert,
+      displayFormDialog,
+      sendData,
+    } = this.state;
     const sliderContainerList = Object.keys(threshold).map((elKey) => {
       return (
         <Grid item md={10} xs={12} key={elKey}>
@@ -190,61 +293,95 @@ class UserConfig extends Component {
     });
     if (this.props.userId) {
       return (
-        <Container maxWidth="lg" style={{ width: "80vw"}}>
-          <MotorState isOn = {this.state.isTurn} />
-          {/* <span style={{position: "fixed", top: 200,right: 20,border:"1px solid black",padding: 15,borderRadius:"50%"}}>ON</span> */}
-          {this.props.isAuto ?(
-          <div>
-          <CurrentSetting currentConfig={this.state.currentConfig} />
-          <form onSubmit={this.submitHandler.bind(this)}>
+        <Container maxWidth="lg" style={{ width: "80vw" }}>
+          {this.props.isAuto && this.props.isAdmin ? (
+            <div>
+              {/* <MotorState isOn={this.state.isTurn} /> */}
+              <CurrentSetting
+                currentConfig={this.state.currentConfig}
+                isOn={this.state.isTurn}
+                changeDisplaySetting={this.changeDisplaySetting.bind(this)}
+              />
+              <form onSubmit={this.submitHandler.bind(this)}>
+                <Grid container spacing={3} className="flex-center">
+                  {this.state.isDisplaySetting && (
+                    <Grid item md={10} xs={12}>
+                      <h4 style={{ marginTop: 15 }}>New Config</h4>
+                    </Grid>
+                  )}
+
+                  {this.state.isDisplaySetting && sliderContainerList}
+                  {/* {sliderContainerList} */}
+                  {this.state.isDisplaySetting && (
+                    <Grid item md={6} xs={12}>
+                      <ButtonArea reset={this.resetHandler.bind(this)} />
+                    </Grid>
+                  )}
+                </Grid>
+              </form>
+              {displayAlert ? (
+                <DeleteAlert
+                  agreed={this.agreeDeleteHandler.bind(this)}
+                  disagreed={this.disagreeDeleteHandler.bind(this)}
+                />
+              ) : null}
+              {/* display set name form  */}
+              {displayFormDialog && (
+                <FormDialog
+                  sendData={sendData}
+                  succeeded={this.submitSuccessHandler.bind(this)}
+                />
+              )}
+              <HistoryConfig
+                history={historyConfig}
+                verifyDelete={this.verifyDeleteHandler.bind(this)}
+                deleted={this.deletedHistoryHandler.bind(this)}
+                checked={this.checkedHistoryHandler.bind(this)}
+              />
+            </div>
+          ) : this.props.isAdmin ? (
+            <div>
+              {/* <MotorState isOn={this.state.isTurn} /> */}
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                direction="column"
+              >
+                <Grid item>
+                  <h3>Manual Setting:</h3>
+                </Grid>
+                <Grid item>
+                  <Switch
+                    turnOn={this.getTurnOnState.bind(this)}
+                    isTurn={this.state.isTurn}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+          ) : (
             <Grid container spacing={3} className="flex-center">
               <Grid item md={10} xs={12}>
-                <h1>Setting</h1>
-              </Grid>
-              {sliderContainerList}
-              <Grid item md={6} xs={12}>
-                <ButtonArea reset={this.resetHandler.bind(this)} />
+                <h3 style={{ textAlign: "center" }}>
+                  Please use the administrator rights to login before setting
+                </h3>
               </Grid>
             </Grid>
-          </form>
-          {displayAlert ? <DeleteAlert agreed={this.agreeDeleteHandler.bind(this)} disagreed={this.disagreeDeleteHandler.bind(this)}/> : null}
-          <HistoryConfig
-            history={historyConfig}
-            verifyDelete= {this.verifyDeleteHandler.bind(this)}
-            deleted={this.deletedHistoryHandler.bind(this)}
-            checked={this.checkedHistoryHandler.bind(this)}
-          />
-          </div>) :
-          <Grid container justify="center" alignItems="center" direction="column">
-              <Grid item >
-                <h2>Manual Setting:</h2>
-              </Grid>
-              <Grid item>
-                <Switch turnOn ={this.getTurnOnState.bind(this)}/>
-              </Grid>
-           </Grid>
-          }
+          )}
         </Container>
       );
     } else {
-      if (this.props.isAuthenticated === false) {
-        return (
-          <Container maxWidth="lg" style={{ width: "80vw" }}>
-            <Grid container spacing={3} className="flex-center">
-              <Grid item md={10} xs={12}>
-                <h1 style={{ textAlign: "center" }}>
-                  Please log in before setting config
-                </h1>
-              </Grid>
-            </Grid>
-          </Container>
-        );
-      }
       return (
         <Container maxWidth="lg" style={{ width: "80vw" }}>
           <Grid container spacing={3} className="flex-center">
             <Grid item md={10} xs={12}>
-              <Loading />
+              {this.props.isAuthenticated === false ? (
+                <h3 style={{ textAlign: "center" }}>
+                  Please log in before setting config
+                </h3>
+              ) : (
+                <Loading />
+              )}
             </Grid>
           </Grid>
         </Container>
@@ -253,13 +390,13 @@ class UserConfig extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   if (state.auth.isAuthenticated) {
     return {
       userId: state.auth.user.id,
       isAuthenticated: state.auth.isAuthenticated,
       isAuto: state.auth.user.isAuto,
-      isAmin: state.auth.user.isAmin
+      isAdmin: state.auth.user.isAdmin,
     };
   } else {
     return {

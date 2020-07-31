@@ -1,0 +1,12 @@
+2020.06.15 01:56:02 INFO  started: Metals version 0.9.0 in workspace 'D:\Tai lieu nam 3 ki 2\TTDADN\ttdadn-frontend'
+2020.06.15 01:56:04 INFO  time: initialize in 1.94s
+2020.06.15 01:56:31 WARN  no build tool detected in workspace 'D:\Tai lieu nam 3 ki 2\TTDADN\ttdadn-frontend'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+Jun 15, 2020 2:02:17 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+2020.06.15 03:54:09 INFO  shutting down Metals
+2020.06.15 15:27:25 INFO  started: Metals version 0.9.0 in workspace 'D:\Tai lieu nam 3 ki 2\TTDADN\ttdadn-frontend'
+2020.06.15 15:27:28 INFO  time: initialize in 3.78s
+2020.06.15 15:27:31 WARN  no build tool detected in workspace 'D:\Tai lieu nam 3 ki 2\TTDADN\ttdadn-frontend'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+Jun 15, 2020 3:28:40 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+2020.06.15 17:27:55 INFO  shutting down Metals
