@@ -1,8 +1,9 @@
 # TTDADN Frontend
 
+![Logo](images/hcmut.png)
+
 GIỚI THIỆU ĐỀ TÀI
 =================
-
 Lý do chọn đề tài
 -----------------
 
@@ -267,6 +268,8 @@ Màn hình quên mật khẩu:
 -   Thông báo reset password thành công:
 
 ![Reset password thành công](images/user_image/reset_pass.PNG)
+
+-   Email thông báo password mới:
 ![Email thông báo password mới](images/user_image/change_pass.PNG)
 
 Màn hình đổi mật khẩu:
@@ -367,7 +370,7 @@ thông báo:
         điều chỉnh là auto.
 
     -   Bật chế độ gửi email thông báo.
-
+-   Email sào phơi đồ thay đổi trạng thái:
 ![Email sào phơi đồ thay đổi trạng thái](images/config_image/emailconfig.PNG)
 
 Màn hình xem dữ liệu do sensor trả về
@@ -384,7 +387,8 @@ Màn hình xem dữ liệu do sensor trả về
 Về MQTT Server
 --------------
 
-![image](images/mqtt.png) Theo như mô tả tổng quan, server của nhóm sẽ hiện
+![image](images/mqtt.png) \
+Theo như mô tả tổng quan, server của nhóm sẽ hiện
 thực 2 hàm chức năng. Broker nhóm sử dụng là của broker online của
 hivemq mqtt để test, và server của CE.
 
